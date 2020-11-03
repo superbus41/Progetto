@@ -5,7 +5,7 @@
 	<title>Insert title here</title>
 </head>
 <body>
-		<form:form action="processEvento" modelAttribute="evento">
+		<form:form action="processEvent" modelAttribute="event">
 			
 			Titolo: <form:input path="titolo"/>
 		

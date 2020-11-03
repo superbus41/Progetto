@@ -6,8 +6,8 @@
 </head>
 
 <body>
-	<a href="addEvento">aggiungi evento</a>
+	<a href="addEvent">aggiungi evento</a>
 <br>
-	<a href="searchEvento">cerca eventi</a>
+	<a href="searchEvents">cerca eventi</a>
 </body>
 </html>

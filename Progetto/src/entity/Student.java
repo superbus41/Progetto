@@ -1,10 +1,10 @@
-package mvc;
+package entity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="student")
-public class UserStudent implements User {
+public class Student implements User {
 	
 	@Id
 	@Column(name="id")
@@ -19,7 +19,7 @@ public class UserStudent implements User {
 	@Column(name="department")
 	private String department;
 
-	public UserStudent(String firstName, String lastName, String department) {
+	public Student(String firstName, String lastName, String department) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.department = department;

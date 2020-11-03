@@ -10,7 +10,7 @@
 
 <a href="login">login</a>
 <br>
-<a href="eventi">eventi</a>
+<a href="event">eventi</a>
 
 </body>
 

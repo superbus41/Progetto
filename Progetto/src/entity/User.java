@@ -1,4 +1,4 @@
-package mvc;
+package entity;
 
 public interface User {
 
