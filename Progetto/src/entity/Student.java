@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="student")
-public class Student implements User {
+public class Student implements UserView {
 	
 	@Id
 	@Column(name="id")
@@ -18,6 +18,10 @@ public class Student implements User {
 	
 	@Column(name="department")
 	private String department;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="user_id")
+	private User user;
 
 	public Student(String firstName, String lastName, String department) {
 		this.firstName = firstName;
@@ -55,6 +59,14 @@ public class Student implements User {
 
 	public void setDepartment(String department) {
 		this.department = department;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

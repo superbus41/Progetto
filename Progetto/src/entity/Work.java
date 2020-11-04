@@ -20,7 +20,6 @@ public class Work implements Offer {
 	@Column(name = "sector")
 	private String sector;
 	
-	
 	public Work() {}
 
 	public Work(String title, String sector) {

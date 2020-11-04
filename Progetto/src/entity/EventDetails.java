@@ -13,4 +13,8 @@ public class EventDetails {
 	
 	@Column(name = "description")
 	private String descripion;
+	
+	@OneToOne(mappedBy = "eventDetails", 
+			cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	private Event event;
 }

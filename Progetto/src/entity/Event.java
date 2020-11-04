@@ -25,7 +25,9 @@ public class Event {
 	@Column(name = "place")
 	private String place;
 	
-	private EventDetails detailsEvent;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="event_details_id")
+	private EventDetails eventDetails;
 	
 	public Event() {
 		
@@ -78,5 +80,14 @@ public class Event {
 		this.place = place;
 	}
 
+	public EventDetails getEventDetails() {
+		return eventDetails;
+	}
+
+	public void setDetailsEvent(EventDetails eventDetails) {
+		this.eventDetails = eventDetails;
+	}
+
+	
 	
 }
