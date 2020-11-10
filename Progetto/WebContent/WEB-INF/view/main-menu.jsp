@@ -8,9 +8,11 @@
 
 <hr>
 
-<a href="login">login</a>
-<br>
-<a href="event">eventi</a>
+
+<a href="/work/showList">Area Riservata - Offerte di Lavoro</a>
+<br><br>
+<a href="/event/showList">Area Riservata - Eventi</a>
+
 
 </body>
 
