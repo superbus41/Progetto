@@ -82,7 +82,7 @@ public class OfferController {
 		
 		workService.saveWork(work);
 		
-		return "redirect:/offer/list";
+		return "redirect:/offer/workList";
 	}
 	
 	@PostMapping("/saveStage")
@@ -90,17 +90,27 @@ public class OfferController {
 		
 		stageService.saveStage(stage);
 		
-		return "redirect:/offer/list";
+		return "redirect:/offer/stageList";
 	}
 	
 	@GetMapping("/updateWork")
-	public String showFormForUpdate(@RequestParam("workId") int id, Model model) {
+	public String showWorkUpdateForm(@RequestParam("workId") int id, Model model) {
 		
 		Work work = workService.getWork(id);
 		
 		model.addAttribute("work", work);
 		
-		return "work-form";
+		return "new-work-offer-form";
+	}
+	
+	@GetMapping("/updateStage")
+	public String showStageUpdateForm(@RequestParam("stageId") int id, Model model) {
+		
+		Stage stage = stageService.getStage(id);
+		
+		model.addAttribute("stage", stage);
+		
+		return "new-stage-offer-form";
 	}
 	
 	@GetMapping("/deleteWork")
@@ -108,16 +118,34 @@ public class OfferController {
 		
 		workService.deleteWork(id);
 		
-		return "redirect:/work/list";
+		return "redirect:/offer/workList";
 	}
 	
-	@GetMapping("/search")
+	@GetMapping("/deleteStage")
+	public String deleteStage(@RequestParam("stageId") int id, Model model) {
+		
+		stageService.deleteStage(id);
+		
+		return "redirect:/offer/stageList";
+	}
+	
+	@GetMapping("/searchWork")
 	public String searchWorks(@RequestParam("searchName") String searchName, Model model) {
 		
 		List<Work> works = workService.searchWorks(searchName);
 		
 		model.addAttribute("works", works);
 		
-		return "list-works";
+		return "work-list";
+	}
+	
+	@GetMapping("/searchStage")
+	public String searchStages(@RequestParam("searchName") String searchName, Model model) {
+		
+		List<Stage> stages = stageService.searchStages(searchName);
+		
+		model.addAttribute("stages", stages);
+		
+		return "stage-list";
 	}
 }

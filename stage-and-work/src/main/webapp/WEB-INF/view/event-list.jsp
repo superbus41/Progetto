@@ -41,6 +41,8 @@
 					<th></th>
 					<th>Luogo</th>
 					<th></th>
+					<th>Valida</th>
+					<th></th>
 					<th>Azioni</th>
 				</tr>
 				
@@ -72,11 +74,12 @@
 						<td></td>
 						<td> ${tempEvent.place} </td>
 						<td></td>
+
 						
 						<td> <a href="${detailsLink}">Dettagli</a></td>
 						<td> <a href="${updateLink}">Update</a>
 						<a href="${deleteLink}"	onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
-						<td><a href="${subscibeLink}">Subscribe</a><a href="${unsubscibeLink}">Unsubscribe</a></td>
+						<td><a href="${subscribeLink}">Candida</a> <a href="${unsubscribeLink}">Annulla</a></td>
 					</tr>
 				
 				</c:forEach>

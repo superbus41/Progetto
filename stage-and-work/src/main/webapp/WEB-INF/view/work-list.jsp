@@ -34,27 +34,53 @@
 			<table>
 				<tr>
 					<th>Titolo</th>
+					<th></th>
 					<th>Settore</th>
+					<th></th>
+					<th>Valida</th>
+					<th></th>
 					<th>Azione</th>
 				</tr>
 				
 				<!-- loop over and print our customers -->
 				<c:forEach var="tempWork" items="${works}">
 				
-					<c:url var="updateLink" value="/work/workUpdate">
+					<c:url var="detailsLink" value="/offer/details">
+						<c:param name="eventId" value="${tempEvent.id}"/>
+					</c:url>
+					<c:url var="updateLink" value="/offer/updateWork">
 						<c:param name="workId" value="${tempWork.id}"/>
 					</c:url>
-					<c:url var="deleteLink" value="/work/workDelete">
+					<c:url var="deleteLink" value="/offer/deleteWork">
 						<c:param name="workId" value="${tempWork.id}"/>
+					</c:url>
+					<c:url var="validateLink" value="/offer/validate">
+						<c:param name="eventId" value="${tempEvent.id}"/>
+					</c:url>
+					<c:url var="invalidateLink" value="/offer/invalidate">
+						<c:param name="eventId" value="${tempEvent.id}"/>
+					</c:url>
+					<c:url var="subscribeLink" value="/offer/subscribe">
+						<c:param name="eventId" value="${tempEvent.id}"/>
+					</c:url>
+					<c:url var="unsubscribeLink" value="/offer/unsubscribe">
+						<c:param name="eventId" value="${tempEvent.id}"/>
 					</c:url>
 					
 					<tr>
 						<td> ${tempWork.title} </td>
+						<td></td>
 						<td> ${tempWork.sector} </td>
-						
-						<td> <a href="${updateLink}">Update</a>|
+						<td></td>
+						<td> ${tempWork.validated} </td>
+						<td></td>
+						<td> <a href="${detailsLink}">Dettagli</a></td>
+						<td> <a href="${updateLink}">Update</a> |
 						<a href="${deleteLink}"
 							onclick="if (!(confirm('Sei sicuro di voler eliminare l'offerta?\n(Permanente)'))) return false">Elimina</a></td>
+						<td><a href="${subscribeLink}">Candida</a> | <a href="${unsubscribeLink}">Annulla</a></td>
+						<td><a href="${validateLink}">Convalida</a> | <a href="${invalidateLink}">Annulla</a></td>	
+						
 					</tr>
 				
 				</c:forEach>

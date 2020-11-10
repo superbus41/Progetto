@@ -1,5 +1,7 @@
 package progetto.stageandwork.entity;
 
+
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -30,14 +32,14 @@ public class Stage {
 	private boolean tipo;
 	
 	@Column(name = "starting_date")
-	private String startingDate;
+	private Date startingDate;
 	
 	@Column(name = "ending_date")
-	private String endingDate;
+	private Date endingDate;
 	
 	public Stage() {}
 
-	public Stage(String title, String sector, boolean tipo, String startingDate, String endingDate) {
+	public Stage(String title, String sector, boolean tipo, Date startingDate, Date endingDate) {
 		this.validated = false;
 		this.title = title;
 		this.sector = sector;
@@ -86,42 +88,25 @@ public class Stage {
 		this.tipo = tipo;
 	}
 
-	public String getStartingDate() {
+	public Date getStartingDate() {
 		return startingDate;
 	}
 
-	public void setStartingDate(String startingDate) {
+	public void setStartingDate(Date startingDate) {
 		this.startingDate = startingDate;
 	}
 
-	public String getEndingDate() {
+	public Date getEndingDate() {
 		return endingDate;
 	}
 
-	public void setEndingDate(String endingDate) {
+	public void setEndingDate(Date endingDate) {
 		this.endingDate = endingDate;
 	}
 	
-	
 
-	/*public LocalDate getStartingDate() {
-		return startingDate;
-	}
-
-	public void setStartingDate(LocalDate startingDate) {
-		this.startingDate = startingDate;
-	};
-	
-	public LocalDate getEndingDate() {
-		return endingDate;
-	}
-
-	public void setEndingDate(LocalDate endingDate) {
-		this.endingDate = endingDate;
-	}
 
 	public int getDuration() {
-		return Period.between(endingDate, startingDate).getMonths();
-
-	}*/
+		return Period.between(endingDate.toLocalDate(), startingDate.toLocalDate()).getMonths();
+	}
 }
