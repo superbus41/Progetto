@@ -30,14 +30,14 @@ public class Stage {
 	private boolean tipo;
 	
 	@Column(name = "starting_date")
-	private LocalDate startingDate;
+	private String startingDate;
 	
 	@Column(name = "ending_date")
-	private LocalDate endingDate;
+	private String endingDate;
 	
 	public Stage() {}
 
-	public Stage(String title, String sector, boolean tipo, LocalDate startingDate, LocalDate endingDate) {
+	public Stage(String title, String sector, boolean tipo, String startingDate, String endingDate) {
 		this.validated = false;
 		this.title = title;
 		this.sector = sector;
@@ -86,7 +86,25 @@ public class Stage {
 		this.tipo = tipo;
 	}
 
-	public LocalDate getStartingDate() {
+	public String getStartingDate() {
+		return startingDate;
+	}
+
+	public void setStartingDate(String startingDate) {
+		this.startingDate = startingDate;
+	}
+
+	public String getEndingDate() {
+		return endingDate;
+	}
+
+	public void setEndingDate(String endingDate) {
+		this.endingDate = endingDate;
+	}
+	
+	
+
+	/*public LocalDate getStartingDate() {
 		return startingDate;
 	}
 
@@ -94,8 +112,16 @@ public class Stage {
 		this.startingDate = startingDate;
 	};
 	
+	public LocalDate getEndingDate() {
+		return endingDate;
+	}
+
+	public void setEndingDate(LocalDate endingDate) {
+		this.endingDate = endingDate;
+	}
+
 	public int getDuration() {
 		return Period.between(endingDate, startingDate).getMonths();
 
-	}
+	}*/
 }

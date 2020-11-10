@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import progetto.stageandwork.entity.*;
+import progetto.stageandwork.service.StageService;
 import progetto.stageandwork.service.WorkService;
 
 @Controller
@@ -21,14 +22,34 @@ public class OfferController {
 	@Autowired
 	private WorkService workService;
 	
+	@Autowired
+	private StageService stageService;
+	
+	
 	@GetMapping("/list")
-	public String listOffers(Model model) {
+	public String list(Model model) {
+		
+		return "offer-list";
+	}
+	
+	@GetMapping("/stageList")
+	public String listStages(Model model) {
+		
+		List<Stage> stages = stageService.getStages();
+		
+		model.addAttribute("stages", stages);
+		
+		return "stage-list";
+	}
+	
+	@GetMapping("/workList")
+	public String listWorks(Model model) {
 		
 		List<Work> works = workService.getWorks();
 		
 		model.addAttribute("works", works);
 		
-		return "offer-list";
+		return "work-list";
 	}
 	
 	@GetMapping("/new")
@@ -60,6 +81,14 @@ public class OfferController {
 	public String saveWork(@ModelAttribute("work") Work work) {
 		
 		workService.saveWork(work);
+		
+		return "redirect:/offer/list";
+	}
+	
+	@PostMapping("/saveStage")
+	public String saveStage(@ModelAttribute("stage") Stage stage) {
+		
+		stageService.saveStage(stage);
 		
 		return "redirect:/offer/list";
 	}

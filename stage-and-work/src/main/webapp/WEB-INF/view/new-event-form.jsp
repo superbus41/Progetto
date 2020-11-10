@@ -28,7 +28,7 @@
 						</tr>
 						<tr>
 							<td><label>Data dell'evento:</label></td>
-							<td><form:input path="date"/></td>
+							<td><form:input type="date" path="date"/></td>
 						</tr>
 						<tr>
 							<td><label>Luogo dell'evento:</label></td>

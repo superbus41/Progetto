@@ -1,6 +1,6 @@
 package progetto.stageandwork.entity;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 import javax.persistence.*;
 
@@ -20,7 +20,7 @@ public class Event {
 	private String sector;
 	
 	@Column(name="date")
-	private String date;
+	private Date date;
 	
 	@Column(name = "place")
 	private String place;
@@ -33,7 +33,7 @@ public class Event {
 		
 	}
 
-	public Event(String title, String sector, String date, String place) {
+	public Event(String title, String sector, Date date, String place) {
 		this.title = title;
 		this.sector = sector;
 		this.date = date;
@@ -64,11 +64,11 @@ public class Event {
 		this.sector = sector;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

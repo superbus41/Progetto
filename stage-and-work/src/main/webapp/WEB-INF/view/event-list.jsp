@@ -34,31 +34,49 @@
 			<table>
 				<tr>
 					<th>Titolo</th>
+					<th></th>
 					<th>Settore</th>
+					<th></th>
 					<th>Data</th>
+					<th></th>
 					<th>Luogo</th>
-					<th>Azione</th>
+					<th></th>
+					<th>Azioni</th>
 				</tr>
 				
 				<!-- loop over and print our customers -->
 				<c:forEach var="tempEvent" items="${events}">
-				
+					
+					<c:url var="detailsLink" value="/event/details">
+						<c:param name="eventId" value="${tempEvent.id}"/>
+					</c:url>
 					<c:url var="updateLink" value="/event/update">
 						<c:param name="eventId" value="${tempEvent.id}"/>
 					</c:url>
 					<c:url var="deleteLink" value="/event/delete">
 						<c:param name="eventId" value="${tempEvent.id}"/>
 					</c:url>
+					<c:url var="subscribeLink" value="/event/subscribe">
+						<c:param name="eventId" value="${tempEvent.id}"/>
+					</c:url>
+					<c:url var="unsubscribeLink" value="/event/unsubscribe">
+						<c:param name="eventId" value="${tempEvent.id}"/>
+					</c:url>
 					
 					<tr>
 						<td> ${tempEvent.title} </td>
+						<td></td>
 						<td> ${tempEvent.sector} </td>
+						<td></td>
 						<td> ${tempEvent.date} </td>
+						<td></td>
 						<td> ${tempEvent.place} </td>
+						<td></td>
+						
+						<td> <a href="${detailsLink}">Dettagli</a></td>
 						<td> <a href="${updateLink}">Update</a>
-						|
-						<a href="${deleteLink}"
-							onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
+						<a href="${deleteLink}"	onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
+						<td><a href="${subscibeLink}">Subscribe</a><a href="${unsubscibeLink}">Unsubscribe</a></td>
 					</tr>
 				
 				</c:forEach>
