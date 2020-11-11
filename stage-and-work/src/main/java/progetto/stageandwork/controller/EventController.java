@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import progetto.stageandwork.entity.Event;
+import progetto.stageandwork.entity.EventDetails;
 import progetto.stageandwork.service.EventService;
 
 @Controller
@@ -38,6 +39,10 @@ public class EventController {
 	public String showFormForAdd(Model model) {
 		
 		Event event = new Event();
+		
+		EventDetails details = new EventDetails();
+		
+		event.setEventDetails(details);
 		
 		model.addAttribute("event", event);
 		

@@ -19,4 +19,24 @@ public class EventDetails {
 	@OneToOne(mappedBy = "eventDetails", 
 			cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Event event;
+	
+	public EventDetails() {}
+	
+	public String getDescripion() {
+		return descripion;
+	}
+
+	public void setDescripion(String descripion) {
+		this.descripion = descripion;
+	}
+
+	public Event getEvent() {
+		return event;
+	}
+
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+	
+	
 }

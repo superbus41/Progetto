@@ -84,7 +84,7 @@ public class Event {
 		return eventDetails;
 	}
 
-	public void setDetailsEvent(EventDetails eventDetails) {
+	public void setEventDetails(EventDetails eventDetails) {
 		this.eventDetails = eventDetails;
 	}
 
