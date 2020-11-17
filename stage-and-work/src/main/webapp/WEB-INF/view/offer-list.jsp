@@ -8,9 +8,9 @@
 	<h2>Stage&Work Home Page</h2>
 	<hr>
 	
-	<a href="${pageContext.request.contextPath}/offer/stageList">Lista offerte di stage</a>
+	<a href="${pageContext.request.contextPath}/stage/list">Lista offerte di stage</a>
 	<br>
-	<a href="${pageContext.request.contextPath}/offer/workList">Lista offerte di Lavoro</a>
+	<a href="${pageContext.request.contextPath}/work/list">Lista offerte di Lavoro</a>
 	<br>
 	<div style="clear; both;"></div>
 	<p>

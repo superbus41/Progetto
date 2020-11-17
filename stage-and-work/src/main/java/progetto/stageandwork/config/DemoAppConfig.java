@@ -51,10 +51,8 @@ public class DemoAppConfig implements WebMvcConfigurer {
 	
 	@Bean
 	public DataSource myDataSource() {
-		
 		// create connection pool
 		ComboPooledDataSource myDataSource = new ComboPooledDataSource();
-
 		// set the jdbc driver
 		try {
 			myDataSource.setDriverClass("com.mysql.jdbc.Driver");		

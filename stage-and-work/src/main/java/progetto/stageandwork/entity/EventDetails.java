@@ -14,7 +14,7 @@ public class EventDetails {
 	private int id;
 	
 	@Column(name = "description")
-	private String descripion;
+	private String description;
 	
 	@OneToOne(mappedBy = "eventDetails", 
 			cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -22,12 +22,12 @@ public class EventDetails {
 	
 	public EventDetails() {}
 	
-	public String getDescripion() {
-		return descripion;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescripion(String descripion) {
-		this.descripion = descripion;
+	public void setDescription(String descripion) {
+		this.description = descripion;
 	}
 
 	public Event getEvent() {

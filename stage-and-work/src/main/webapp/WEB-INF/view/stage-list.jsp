@@ -1,5 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 
@@ -51,26 +52,26 @@
 				<!-- loop over and print our customers -->
 				<c:forEach var="tempStage" items="${stages}">
 				
-					<c:url var="detailsLink" value="/offer/details">
+					<c:url var="detailsLink" value="/stage/details">
 						<c:param name="eventId" value="${tempEvent.id}"/>
 					</c:url>
-					<c:url var="updateLink" value="/offer/updateStage">
+					<c:url var="updateLink" value="/stage/update">
 						<c:param name="stageId" value="${tempStage.id}"/>
 					</c:url>
-					<c:url var="deleteLink" value="/offer/deleteStage">
+					<c:url var="deleteLink" value="/stage/delete">
 						<c:param name="stageId" value="${tempStage.id}"/>
 					</c:url>
-					<c:url var="validateLink" value="/offer/validate">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+					<c:url var="convalidateLink" value="/stage/convalidate">
+						<c:param name="stageId" value="${tempStage.id}"/>
 					</c:url>
-					<c:url var="invalidateLink" value="/offer/invalidate">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+					<c:url var="invalidateLink" value="/stage/invalidate">
+						<c:param name="stageId" value="${tempStage.id}"/>
 					</c:url>
-					<c:url var="subscribeLink" value="/offer/subscribe">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+					<c:url var="subscribeLink" value="/stage/subscribe">
+						<c:param name="stageId" value="${tempStage.id}"/>
 					</c:url>
-					<c:url var="unsubscribeLink" value="/offer/unsubscribe">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+					<c:url var="unsubscribeLink" value="/stage/unsubscribe">
+						<c:param name="stageId" value="${tempStage.id}"/>
 					</c:url>
 					
 					
@@ -88,10 +89,26 @@
 						<td> ${tempStage.validated} </td>
 						<td></td>
 						<td> <a href="${detailsLink}">Dettagli</a></td>
-						<td> <a href="${updateLink}">Update</a> |
-						<a href="${deleteLink}" onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
-						<td><a href="${subscribeLink}">Candida</a> | <a href="${unsubscribeLink}">Annulla</a></td>
-						<td><a href="${validateLink}">Convalida</a> | <a href="${invalidateLink}">Annulla</a></td>
+						
+						<security:authorize access="hasRole('COMPANY')">
+							<td> <a href="${updateLink}">Update</a> |
+							<a href="${deleteLink}" onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
+						</security:authorize>
+						
+						<c:if test="${tempStage.validated}">
+							<security:authorize access="hasRole('STUDENT')">
+								<td><a href="${subscribeLink}">Candida</a> | <a href="${unsubscribeLink}">Annulla</a></td>
+							</security:authorize>
+						</c:if>
+
+						<security:authorize access="hasRole('UNIVERSITY')">
+							<td>
+								<c:choose>
+									<c:when test="${!tempStage.validated}"><a href="${convalidateLink}">Convalida</a></c:when>
+									<c:otherwise><a href="${invalidateLink}">Invalida</a></c:otherwise>
+								</c:choose>
+							</td>
+						</security:authorize>
 						
 					</tr>
 				

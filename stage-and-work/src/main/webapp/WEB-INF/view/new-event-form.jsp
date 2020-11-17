@@ -35,6 +35,10 @@
 							<td><form:input path="place"/></td>
 						</tr>
 						<tr>
+							<td><label>Descrizione dell'evento:</label></td>
+							<td><form:input type="textarea" path="eventDetails.description"/></td>
+						</tr>
+						<tr>
 							<td><input type="submit" value="Save" class="save"/></td>
 						</tr>
 					</tbody>

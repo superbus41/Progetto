@@ -1,5 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 
@@ -45,26 +46,26 @@
 				<!-- loop over and print our customers -->
 				<c:forEach var="tempWork" items="${works}">
 				
-					<c:url var="detailsLink" value="/offer/details">
+					<c:url var="detailsLink" value="/work/details">
 						<c:param name="eventId" value="${tempEvent.id}"/>
 					</c:url>
-					<c:url var="updateLink" value="/offer/updateWork">
+					<c:url var="updateLink" value="/work/update">
 						<c:param name="workId" value="${tempWork.id}"/>
 					</c:url>
-					<c:url var="deleteLink" value="/offer/deleteWork">
+					<c:url var="deleteLink" value="/work/delete">
 						<c:param name="workId" value="${tempWork.id}"/>
 					</c:url>
-					<c:url var="validateLink" value="/offer/validate">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+					<c:url var="convalidateLink" value="/work/convalidate">
+						<c:param name="workId" value="${tempWork.id}"/>
 					</c:url>
-					<c:url var="invalidateLink" value="/offer/invalidate">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+					<c:url var="invalidateLink" value="/work/invalidate">
+						<c:param name="workId" value="${tempWork.id}"/>
 					</c:url>
-					<c:url var="subscribeLink" value="/offer/subscribe">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+					<c:url var="subscribeLink" value="/work/subscribe">
+						<c:param name="workId" value="${tempWork.id}"/>
 					</c:url>
-					<c:url var="unsubscribeLink" value="/offer/unsubscribe">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+					<c:url var="unsubscribeLink" value="/work/unsubscribe">
+						<c:param name="workId" value="${tempWork.id}"/>
 					</c:url>
 					
 					<tr>
@@ -75,11 +76,26 @@
 						<td> ${tempWork.validated} </td>
 						<td></td>
 						<td> <a href="${detailsLink}">Dettagli</a></td>
-						<td> <a href="${updateLink}">Update</a> |
-						<a href="${deleteLink}"
-							onclick="if (!(confirm('Sei sicuro di voler eliminare l'offerta?\n(Permanente)'))) return false">Elimina</a></td>
-						<td><a href="${subscribeLink}">Candida</a> | <a href="${unsubscribeLink}">Annulla</a></td>
-						<td><a href="${validateLink}">Convalida</a> | <a href="${invalidateLink}">Annulla</a></td>	
+						
+						<security:authorize access="hasRole('COMPANY')">
+							<td> <a href="${updateLink}">Update</a> |
+							<a href="${deleteLink}" onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
+						</security:authorize>
+						
+						<c:if test="${tempStage.validated}">
+							<security:authorize access="hasRole('STUDENT')">
+								<td><a href="${subscribeLink}">Candida</a> | <a href="${unsubscribeLink}">Annulla</a></td>
+							</security:authorize>
+						</c:if>
+						
+						<security:authorize access="hasRole('UNIVERSITY')">
+							<td>
+								<c:choose>
+									<c:when test="${!tempWork.validated}"><a href="${convalidateLink}">Convalida</a></c:when>
+									<c:otherwise><a href="${invalidateLink}">Invalida</a></c:otherwise>
+								</c:choose>
+							</td>
+						</security:authorize>
 						
 					</tr>
 				

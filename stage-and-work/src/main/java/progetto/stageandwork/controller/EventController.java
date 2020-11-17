@@ -26,7 +26,7 @@ public class EventController {
 	private EventService eventService;
 	
 	@GetMapping("/list")
-	public String listOffers(Model model) {
+	public String list(Model model) {
 		
 		List<Event> events = eventService.getEvents();
 		
@@ -36,7 +36,7 @@ public class EventController {
 	}
 	
 	@GetMapping("/new")
-	public String showFormForAdd(Model model) {
+	public String add(Model model) {
 		
 		Event event = new Event();
 		
@@ -50,7 +50,7 @@ public class EventController {
 	}
 	
 	@PostMapping("/save")
-	public String saveEvent(@ModelAttribute("event") Event event) {
+	public String save(@ModelAttribute("event") Event event) {
 		
 		eventService.saveEvent(event);
 		
@@ -58,7 +58,7 @@ public class EventController {
 	}
 	
 	@GetMapping("/update")
-	public String showUpdateForm(@RequestParam("eventId") int id, Model model) {
+	public String update(@RequestParam("eventId") int id, Model model) {
 		
 		Event event = eventService.getEvent(id);
 		

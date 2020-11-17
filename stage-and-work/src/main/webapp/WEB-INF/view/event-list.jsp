@@ -1,5 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 
@@ -41,8 +42,6 @@
 					<th></th>
 					<th>Luogo</th>
 					<th></th>
-					<th>Valida</th>
-					<th></th>
 					<th>Azioni</th>
 				</tr>
 				
@@ -75,11 +74,14 @@
 						<td> ${tempEvent.place} </td>
 						<td></td>
 
-						
 						<td> <a href="${detailsLink}">Dettagli</a></td>
-						<td> <a href="${updateLink}">Update</a>
-						<a href="${deleteLink}"	onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
-						<td><a href="${subscribeLink}">Candida</a> <a href="${unsubscribeLink}">Annulla</a></td>
+						<security:authorize access="hasRole('UNIVERSITY')">
+							<td> <a href="${updateLink}">Update</a>
+							<a href="${deleteLink}"	onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
+						</security:authorize>
+						<security:authorize access="hasAnyRole('STUDENT', 'COMPANY')">
+							<td><a href="${subscribeLink}">Candida</a> <a href="${unsubscribeLink}">Annulla</a></td>
+						</security:authorize>
 					</tr>
 				
 				</c:forEach>
