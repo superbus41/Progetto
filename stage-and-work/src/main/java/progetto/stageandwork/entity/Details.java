@@ -2,11 +2,9 @@ package progetto.stageandwork.entity;
 
 import javax.persistence.*;
 
-import progetto.stageandwork.entity.Event;
-
 @Entity
-@Table(name = "event_details")
-public class EventDetails {
+@Table(name = "details")
+public class Details {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -16,11 +14,18 @@ public class EventDetails {
 	@Column(name = "description")
 	private String description;
 	
-	@OneToOne(mappedBy = "eventDetails", 
-			cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@OneToOne(mappedBy = "details")
 	private Event event;
 	
-	public EventDetails() {}
+	public Details() {}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 	public String getDescription() {
 		return description;
@@ -37,6 +42,6 @@ public class EventDetails {
 	public void setEvent(Event event) {
 		this.event = event;
 	}
-	
+
 	
 }

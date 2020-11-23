@@ -1,5 +1,7 @@
 package progetto.stageandwork.entity;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,16 +22,23 @@ public class Work {
 	@Column(name = "sector")
 	private String sector;
 	
-	public Work() {
-		
-	}
-
-	public Work(String title, String sector) {
-		this.validated = false;
-		this.title = title;
-		this.sector = sector;
-	}
-
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name="details_id")
+	private Details details;
+	
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, 
+			CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name="company_id")
+	private Company company;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, 
+			CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinTable(name = "work_student",
+		joinColumns = @JoinColumn(name = "work_id"),
+		inverseJoinColumns = @JoinColumn(name = "student_id"))
+	private Set<Student> subs;
+	
+	public Work() {	}
 
 	public int getId() {
 		return id;
@@ -63,5 +72,60 @@ public class Work {
 		this.sector = sector;
 	}
 
+	public Details getDetails() {
+		return details;
+	}
+
+	public void setDetails(Details details) {
+		this.details = details;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public Set<Student> getSubs() {
+		return subs;
+	}
+
+	public void setSubs(Set<Student> subs) {
+		this.subs = subs;
+	}
+
+	public void addSub(Student student) {
+		subs.add(student);
+		student.addSubscription(this);
+	}
+
+	public void removeSub(Student student) {
+		subs.remove(student);
+		student.removeSubscription(this);	
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Work other = (Work) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 	
 }

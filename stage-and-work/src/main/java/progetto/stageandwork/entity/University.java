@@ -1,5 +1,7 @@
 package progetto.stageandwork.entity;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,9 +17,12 @@ public class University {
 	private String name;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user")
 	private User user;
 
+	@OneToMany(mappedBy = "university")
+	private List<Event> events;
+	
 	public University(){
 	}
 	

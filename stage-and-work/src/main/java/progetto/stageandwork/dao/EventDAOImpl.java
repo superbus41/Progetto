@@ -55,11 +55,15 @@ public class EventDAOImpl implements EventDAO {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		Query query = session.createQuery("delete from Event where id=:eventId");
+		Event event = session.get(Event.class, id);
+		
+		session.remove(event);
+		
+		/*Query query = session.createQuery("delete from Event where id=:eventId");
 		
 		query.setParameter("eventId", id);
 		
-		query.executeUpdate();
+		query.executeUpdate();*/
 	}
 
 	@Override

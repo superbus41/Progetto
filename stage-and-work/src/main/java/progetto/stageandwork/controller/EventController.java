@@ -1,10 +1,8 @@
 package progetto.stageandwork.controller;
 
+import java.security.Principal;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import progetto.stageandwork.entity.Event;
-import progetto.stageandwork.entity.EventDetails;
+import progetto.stageandwork.entity.Student;
+import progetto.stageandwork.entity.University;
+import progetto.stageandwork.entity.User;
 import progetto.stageandwork.service.EventService;
+import progetto.stageandwork.service.UserService;
 
 @Controller
 @RequestMapping("/event")
@@ -24,6 +25,9 @@ public class EventController {
 
 	@Autowired
 	private EventService eventService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/list")
 	public String list(Model model) {
@@ -40,17 +44,19 @@ public class EventController {
 		
 		Event event = new Event();
 		
-		EventDetails details = new EventDetails();
-		
-		event.setEventDetails(details);
-		
 		model.addAttribute("event", event);
 		
 		return "new-event-form";
 	}
 	
 	@PostMapping("/save")
-	public String save(@ModelAttribute("event") Event event) {
+	public String save(@ModelAttribute("event") Event event, Principal principal) {
+		
+		User user = userService.loadUserByUsername(principal.getName());
+		
+		University university = user.getUniversity();
+		
+		event.setUniversity(university);
 		
 		eventService.saveEvent(event);
 		
@@ -68,7 +74,7 @@ public class EventController {
 	}
 	
 	@GetMapping("/delete")
-	public String deleteEvent(@RequestParam("eventId") int id, Model model) {
+	public String delete(@RequestParam("eventId") int id, Model model) {
 		
 		eventService.deleteEvent(id);
 		
@@ -76,12 +82,54 @@ public class EventController {
 	}
 	
 	@GetMapping("/search")
-	public String searchEvents(@RequestParam("searchName") String searchName, Model model) {
+	public String search(@RequestParam("searchName") String searchName, Model model) {
 		
 		List<Event> events = eventService.searchEvents(searchName);
 		
 		model.addAttribute("events", events);
 		
 		return "event-list";
+	}
+	
+	@GetMapping("/details")
+	public String details(@RequestParam("eventId") int id, Model model) {
+		
+		Event event = eventService.getEvent(id);
+
+		model.addAttribute("event", event);
+		
+		return "details";
+	}
+	
+	@GetMapping("/subscribe")
+	public String subscribe(@RequestParam("eventId") int id, Principal principal) {
+		
+		User user = userService.loadUserByUsername(principal.getName());
+		
+		Student student = user.getStudent();
+		
+		Event event = eventService.getEvent(id);
+		
+		event.addSub(student);
+		
+		eventService.saveEvent(event);
+		
+		return "redirect:/event/list";
+	}
+	
+	@GetMapping("/unsubscribe")
+	public String unsubscribe(@RequestParam("eventId") int id, Principal principal) {
+		
+		User user = userService.loadUserByUsername(principal.getName());
+		
+		Student student = user.getStudent();
+		
+		Event event = eventService.getEvent(id);
+
+		event.removeSub(student);
+			
+		eventService.saveEvent(event);
+		
+		return "redirect:/event/list";
 	}
 }

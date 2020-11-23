@@ -1,9 +1,8 @@
 package progetto.stageandwork.entity;
 
-
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.Period;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -11,9 +10,6 @@ import javax.persistence.*;
 @Table(name="stage")
 public class Stage {
 
-	final static boolean STAGE_CURRICULARE = true;
-	final static boolean STAGE_EXTRACURRICULARE = false;
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -37,16 +33,23 @@ public class Stage {
 	@Column(name = "ending_date")
 	private Date endingDate;
 	
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name="details_id")
+	private Details details;
+	
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, 
+			CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name="company_id")
+	private Company company;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, 
+			CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinTable(name = "stage_student",
+		joinColumns = @JoinColumn(name = "stage_id"),
+		inverseJoinColumns = @JoinColumn(name = "student_id"))
+	private Set<Student> subs;
+	
 	public Stage() {}
-
-	public Stage(String title, String sector, boolean tipo, Date startingDate, Date endingDate) {
-		this.validated = false;
-		this.title = title;
-		this.sector = sector;
-		this.tipo = tipo;
-		this.startingDate = startingDate;
-		this.endingDate = endingDate;
-	}
 
 	public int getId() {
 		return id;
@@ -104,7 +107,61 @@ public class Stage {
 		this.endingDate = endingDate;
 	}
 	
+	public Details getDetails() {
+		return details;
+	}
 
+	public void setDetails(Details details) {
+		this.details = details;
+	}
+	
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public Set<Student> getSubs() {
+		return subs;
+	}
+
+	public void setSubs(Set<Student> subs) {
+		this.subs = subs;
+	}
+	
+	public void addSub(Student student) {
+		subs.add(student);
+		student.addSubscription(this);
+	}
+
+	public void removeSub(Student student) {
+		subs.remove(student);
+		student.removeSubscription(this);	
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Stage other = (Stage) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 
 	public int getDuration() {
 		return Period.between(endingDate.toLocalDate(), startingDate.toLocalDate()).getMonths();

@@ -7,6 +7,11 @@
 <html>
 	<head>
 		<title>Save Stage</title>
+		<style>
+   			.fixed {
+        		resize: none;
+      		}
+   		</style>
 	</head>
 	<body>
 		<div id="wrapper">
@@ -17,17 +22,17 @@
 		
 		<div id="container">
 			<h3>Save Stage</h3>
-			<form:form action="saveStage" modelAttribute="stage" method="POST">
+			<form:form action="save" modelAttribute="stage" method="POST">
 				<form:hidden path="id"/>
 				<table>
 					<tbody>
 						<tr>
 							<td><label>Titolo dell'offerta:</label></td>
-							<td><form:input path="title"/></td>
+							<td><form:input size="45" maxlength="45" path="title"/></td>
 						</tr>
 						<tr>
 							<td><label>Settore di riferimento:</label></td>
-							<td><form:input path="sector"/></td>
+							<td><form:input size="45" maxlength="45" path="sector"/></td>
 						</tr>
 						<tr>
 							<td><label>Stage curriculare:</label></td>
@@ -40,6 +45,10 @@
 						<tr>
 							<td><label>Data di fine:</label></td>
 							<td><form:input path="endingDate" type="date"/></td>
+						</tr>
+						<tr>
+							<td><label>Descrizione dello stage:</label></td>
+							<td><form:textarea class="fixed" rows="6" cols="80" maxlength="450" path="details.description"/></td>
 						</tr>
 						<tr>
 							<td><input type="submit" value="Save" class="save"/></td>

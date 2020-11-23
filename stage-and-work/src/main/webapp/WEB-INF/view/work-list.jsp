@@ -47,7 +47,7 @@
 				<c:forEach var="tempWork" items="${works}">
 				
 					<c:url var="detailsLink" value="/work/details">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+						<c:param name="workId" value="${tempWork.id}"/>
 					</c:url>
 					<c:url var="updateLink" value="/work/update">
 						<c:param name="workId" value="${tempWork.id}"/>
@@ -69,22 +69,32 @@
 					</c:url>
 					
 					<tr>
-						<td> ${tempWork.title} </td>
+						<td> <a href="${detailsLink}"> ${tempWork.title}</a></td>
 						<td></td>
 						<td> ${tempWork.sector} </td>
 						<td></td>
 						<td> ${tempWork.validated} </td>
 						<td></td>
-						<td> <a href="${detailsLink}">Dettagli</a></td>
+						
 						
 						<security:authorize access="hasRole('COMPANY')">
 							<td> <a href="${updateLink}">Update</a> |
 							<a href="${deleteLink}" onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
 						</security:authorize>
 						
-						<c:if test="${tempStage.validated}">
+						<c:if test="${tempWork.validated}">
 							<security:authorize access="hasRole('STUDENT')">
-								<td><a href="${subscribeLink}">Candida</a> | <a href="${unsubscribeLink}">Annulla</a></td>
+								<security:authentication var="username" property="principal.username"/>
+								<c:set var="subbed" scope="page" value="false"/>
+								<c:forEach var="sub" items="${tempWork.subs}">
+									<c:if test="${username eq sub.user.username}">
+										<c:set var="subbed" value="true"/>
+									</c:if>
+								</c:forEach>
+								<c:choose>
+									<c:when test="${!subbed}"><td><a href="${subscribeLink}">Iscrivi</a></td></c:when>
+									<c:otherwise><td><a href="${unsubscribeLink}">Disiscrivi</a></td></c:otherwise>
+								</c:choose>
 							</security:authorize>
 						</c:if>
 						

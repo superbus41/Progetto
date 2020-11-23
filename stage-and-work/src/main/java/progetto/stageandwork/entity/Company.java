@@ -1,5 +1,7 @@
 package progetto.stageandwork.entity;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,8 +16,14 @@ public class Company {
 	private String name;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user")
 	private User user;
+	
+	@OneToMany(mappedBy = "company")
+	private List<Stage> stages;
+	
+	@OneToMany(mappedBy = "company")
+	private List<Work> works;
 	
 	public Company() {
 	}

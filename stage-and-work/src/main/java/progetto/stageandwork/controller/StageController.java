@@ -1,5 +1,6 @@
 package progetto.stageandwork.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import progetto.stageandwork.entity.Company;
 import progetto.stageandwork.entity.Stage;
-import progetto.stageandwork.entity.Work;
+import progetto.stageandwork.entity.Student;
+import progetto.stageandwork.entity.User;
 import progetto.stageandwork.service.StageService;
+import progetto.stageandwork.service.UserService;
 
 @Controller
 @RequestMapping("/stage")
@@ -22,8 +26,11 @@ public class StageController {
 	@Autowired
 	private StageService stageService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@GetMapping("/list")
-	public String list(Model model) {
+	public String list(Model model, Principal principal) {
 		
 		List<Stage> stages = stageService.getStages();
 		
@@ -33,7 +40,7 @@ public class StageController {
 	}
 	
 	@GetMapping("/new")
-	public String add(Model model) {
+	public String add(Model model, Principal principal) {
 		
 		Stage stage = new Stage();
 		
@@ -43,7 +50,13 @@ public class StageController {
 	}
 	
 	@PostMapping("/save")
-	public String save(@ModelAttribute("stage") Stage stage) {
+	public String save(@ModelAttribute("stage") Stage stage, Principal principal) {
+		
+		User user = userService.loadUserByUsername(principal.getName());
+		
+		Company company = user.getCompany();
+		
+		stage.setCompany(company);
 		
 		stageService.saveStage(stage);
 		
@@ -97,6 +110,48 @@ public class StageController {
 		
 		stage.setValidated(false);
 		
+		stageService.saveStage(stage);
+		
+		return "redirect:/stage/list";
+	}
+	
+	@GetMapping("/details")
+	public String details(@RequestParam("stageId") int id, Model model) {
+		
+		Stage stage = stageService.getStage(id);
+
+		model.addAttribute("stage", stage);
+		
+		return "details";
+	}
+	
+	@GetMapping("/subscribe")
+	public String subscribe(@RequestParam("stageId") int id, Principal principal) {
+		
+		User user = userService.loadUserByUsername(principal.getName());
+		
+		Student student = user.getStudent();
+		
+		Stage stage = stageService.getStage(id);
+		
+		stage.addSub(student);
+		
+		stageService.saveStage(stage);
+		
+		return "redirect:/stage/list";
+	}
+	
+	@GetMapping("/unsubscribe")
+	public String unsubscribe(@RequestParam("stageId") int id, Principal principal) {
+		
+		User user = userService.loadUserByUsername(principal.getName());
+		
+		Student student = user.getStudent();
+		
+		Stage stage = stageService.getStage(id);
+
+		stage.removeSub(student);
+			
 		stageService.saveStage(stage);
 		
 		return "redirect:/stage/list";

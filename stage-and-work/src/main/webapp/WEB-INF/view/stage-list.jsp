@@ -53,7 +53,7 @@
 				<c:forEach var="tempStage" items="${stages}">
 				
 					<c:url var="detailsLink" value="/stage/details">
-						<c:param name="eventId" value="${tempEvent.id}"/>
+						<c:param name="stageId" value="${tempStage.id}"/>
 					</c:url>
 					<c:url var="updateLink" value="/stage/update">
 						<c:param name="stageId" value="${tempStage.id}"/>
@@ -76,7 +76,7 @@
 					
 					
 					<tr>
-						<td> ${tempStage.title} </td>
+						<td> <a href="${detailsLink}">${tempStage.title}</a></td>
 						<td></td>
 						<td> ${tempStage.sector} </td>
 						<td></td>
@@ -88,7 +88,7 @@
 						<td></td>
 						<td> ${tempStage.validated} </td>
 						<td></td>
-						<td> <a href="${detailsLink}">Dettagli</a></td>
+						
 						
 						<security:authorize access="hasRole('COMPANY')">
 							<td> <a href="${updateLink}">Update</a> |
@@ -97,7 +97,17 @@
 						
 						<c:if test="${tempStage.validated}">
 							<security:authorize access="hasRole('STUDENT')">
-								<td><a href="${subscribeLink}">Candida</a> | <a href="${unsubscribeLink}">Annulla</a></td>
+								<security:authentication var="username" property="principal.username"/>
+								<c:set var="subbed" scope="page" value="false"/>
+								<c:forEach var="sub" items="${tempStage.subs}">
+									<c:if test="${username eq sub.user.username}">
+										<c:set var="subbed" value="true"/>
+									</c:if>
+								</c:forEach>
+								<c:choose>
+									<c:when test="${!subbed}"><td><a href="${subscribeLink}">Iscrivi</a></td></c:when>
+									<c:otherwise><td><a href="${unsubscribeLink}">Disiscrivi</a></td></c:otherwise>
+								</c:choose>
 							</security:authorize>
 						</c:if>
 

@@ -1,5 +1,6 @@
 package progetto.stageandwork.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import progetto.stageandwork.entity.*;
-import progetto.stageandwork.service.StageService;
+import progetto.stageandwork.service.UserService;
 import progetto.stageandwork.service.WorkService;
 
 @Controller
@@ -21,6 +22,9 @@ public class WorkController {
 	
 	@Autowired
 	private WorkService workService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/list")
 	public String listWorks(Model model) {
@@ -43,7 +47,14 @@ public class WorkController {
 	}
 	
 	@PostMapping("/save")
-	public String save(@ModelAttribute("work") Work work) {
+	public String save(@ModelAttribute("work") Work work, Principal principal) {
+		
+		
+		User user = userService.loadUserByUsername(principal.getName());
+		
+		Company company = user.getCompany();
+		
+		work.setCompany(company);
 		
 		workService.saveWork(work);
 		
@@ -102,4 +113,45 @@ public class WorkController {
 		return "redirect:/work/list";
 	}
 
+	@GetMapping("/details")
+	public String details(@RequestParam("workId") int id, Model model) {
+		
+		Work work = workService.getWork(id);
+
+		model.addAttribute("work", work);
+		
+		return "details";
+	}
+	
+	@GetMapping("/subscribe")
+	public String subscribe(@RequestParam("workId") int id, Principal principal) {
+		
+		User user = userService.loadUserByUsername(principal.getName());
+		
+		Student student = user.getStudent();
+		
+		Work work = workService.getWork(id);
+		
+		work.addSub(student);
+		
+		workService.saveWork(work);
+		
+		return "redirect:/work/list";
+	}
+	
+	@GetMapping("/unsubscribe")
+	public String unsubscribe(@RequestParam("workId") int id, Principal principal) {
+		
+		User user = userService.loadUserByUsername(principal.getName());
+		
+		Student student = user.getStudent();
+		
+		Work work = workService.getWork(id);
+
+		work.removeSub(student);
+			
+		workService.saveWork(work);
+		
+		return "redirect:/work/list";
+	}
 }

@@ -4,6 +4,11 @@
 <html>
 <head>
 	<title>Save Event</title>
+	<style>
+   		.fixed {
+        	resize: none;
+      	}
+    </style>
 </head>
 	<body>
 		<div id="wrapper">
@@ -20,23 +25,23 @@
 					<tbody>
 						<tr>
 							<td><label>Titolo dell'evento:</label></td>
-							<td><form:input path="title"/></td>
+							<td><form:input size="45" maxlength="45" path="title"/></td>
 						</tr>
 						<tr>
 							<td><label>Settore di riferimento:</label></td>
-							<td><form:input path="sector"/></td>
+							<td><form:input size="45" maxlength="45" path="sector"/></td>
 						</tr>
 						<tr>
 							<td><label>Data dell'evento:</label></td>
-							<td><form:input type="date" path="date"/></td>
+							<td><form:input placeholder="AAAA-MM-DD" type="date" path="date"/></td>
 						</tr>
 						<tr>
 							<td><label>Luogo dell'evento:</label></td>
-							<td><form:input path="place"/></td>
+							<td><form:input size="45" maxlength="45" path="place"/></td>
 						</tr>
 						<tr>
-							<td><label>Descrizione dell'evento:</label></td>
-							<td><form:input type="textarea" path="eventDetails.description"/></td>
+							<td><label>Descrizione dello stage:</label></td>
+							<td><form:textarea class="fixed" rows="6" cols="80" maxlength="440" path="details.description"/></td>
 						</tr>
 						<tr>
 							<td><input type="submit" value="Save" class="save"/></td>

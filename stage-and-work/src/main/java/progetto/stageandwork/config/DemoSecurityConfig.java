@@ -28,10 +28,10 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-			.antMatchers("/home", "/stage/list", "/work/list", "/event/list").authenticated()
-			.antMatchers("/stage/convalidate", "/stage/invalidate", "/work/convalidate", "/work/invalidate").hasRole("UNIVERSITY")
-			.antMatchers("/work/**", "/stage/**", "/newOffer").hasRole("COMPANY")	
-			.antMatchers("/event/**").hasRole("UNIVERSITY")
+			.antMatchers("/home", "/**/list", "/**/details", "/**/search").authenticated()
+			.antMatchers("/**/**subscribe").hasRole("STUDENT")
+			.antMatchers("/**/convalidate", "/**/invalidate", "/event/**").hasRole("UNIVERSITY")
+			.antMatchers("/work/**", "/stage/**", "/newOffer").hasRole("COMPANY")
 		.and()
 		.formLogin()
 			.loginPage("/showMyLoginPage")
@@ -45,7 +45,6 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 		
 }
-
 
 
 

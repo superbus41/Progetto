@@ -1,6 +1,7 @@
 package progetto.stageandwork.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import progetto.stageandwork.entity.Work;
 

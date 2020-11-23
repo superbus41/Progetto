@@ -1,5 +1,7 @@
 package progetto.stageandwork.entity;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,6 +9,7 @@ import javax.persistence.*;
 public class Student {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
 	
@@ -20,14 +23,20 @@ public class Student {
 	private String department;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user")
 	private User user;
 
-	public Student(String firstName, String lastName, String department) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.department = department;
-	}
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy="subs")
+	private Set<Event> subscribedEvents;
+	
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy="subs")
+	private Set<Stage> subscribedStages;
+	
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy="subs")
+	private Set<Work> subscribedWorks;
+	
+	public Student() {}
+
 
 	public int getId() {
 		return id;
@@ -68,13 +77,74 @@ public class Student {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public Set<Event> getSubscribedEvents() {
+		return subscribedEvents;
+	}
 
-	@Override
-	public String toString() {
-		return "UserStudent [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", department="
-				+ department + "]";
+	public void setSubscribedEvents(Set<Event> subscribedEvents) {
+		this.subscribedEvents = subscribedEvents;
+	}
+
+	public Set<Stage> getSubscribedStages() {
+		return subscribedStages;
+	}
+
+	public void setSubscribedStages(Set<Stage> subscribedStages) {
+		this.subscribedStages = subscribedStages;
+	}
+
+	public Set<Work> getSubscribedWorks() {
+		return subscribedWorks;
+	}
+
+	public void setSubscribedWorks(Set<Work> subscribedWorks) {
+		this.subscribedWorks = subscribedWorks;
+	}
+
+	public void addSubscription(Event event) {
+		subscribedEvents.add(event);
 	}
 	
+	public void removeSubscription(Event event) {
+		subscribedEvents.remove(event);
+	}
 	
+	public void addSubscription(Stage stage) {
+		subscribedStages.add(stage);
+	}
+	
+	public void removeSubscription(Stage stage) {
+		subscribedStages.remove(stage);
+	}
+	public void addSubscription(Work work) {
+		subscribedWorks.add(work);
+	}
+	
+	public void removeSubscription(Work work) {
+		subscribedWorks.remove(work);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Student other = (Student) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 	
 }

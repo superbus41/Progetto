@@ -65,7 +65,7 @@
 					</c:url>
 					
 					<tr>
-						<td> ${tempEvent.title} </td>
+						<td> <a href="${detailsLink}">${tempEvent.title}</a></td>
 						<td></td>
 						<td> ${tempEvent.sector} </td>
 						<td></td>
@@ -73,14 +73,24 @@
 						<td></td>
 						<td> ${tempEvent.place} </td>
 						<td></td>
-
-						<td> <a href="${detailsLink}">Dettagli</a></td>
+						
 						<security:authorize access="hasRole('UNIVERSITY')">
 							<td> <a href="${updateLink}">Update</a>
 							<a href="${deleteLink}"	onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
 						</security:authorize>
-						<security:authorize access="hasAnyRole('STUDENT', 'COMPANY')">
-							<td><a href="${subscribeLink}">Candida</a> <a href="${unsubscribeLink}">Annulla</a></td>
+						
+						<security:authorize access="hasRole('STUDENT')">
+							<security:authentication var="username" property="principal.username"/>
+							<c:set var="subbed" scope="page" value="false"/>
+							<c:forEach var="sub" items="${tempEvent.subs}">
+								<c:if test="${username eq sub.user.username}">
+									<c:set var="subbed" value="true"/>
+								</c:if>
+							</c:forEach>
+							<c:choose>
+								<c:when test="${!subbed}"><td><a href="${subscribeLink}">Iscrivi</a></td></c:when>
+								<c:otherwise><td><a href="${unsubscribeLink}">Disiscrivi</a></td></c:otherwise>
+							</c:choose>
 						</security:authorize>
 					</tr>
 				

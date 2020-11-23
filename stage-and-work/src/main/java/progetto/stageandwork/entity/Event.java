@@ -1,6 +1,7 @@
 package progetto.stageandwork.entity;
 
 import java.sql.Date;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -25,20 +26,23 @@ public class Event {
 	@Column(name = "place")
 	private String place;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="event_details_id")
-	private EventDetails eventDetails;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name="details_id")
+	private Details details;
 	
-	public Event() {
-		
-	}
-
-	public Event(String title, String sector, Date date, String place) {
-		this.title = title;
-		this.sector = sector;
-		this.date = date;
-		this.place = place;
-	}
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, 
+			CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name="university_id")
+	private University university;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, 
+			CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinTable(name = "event_student",
+		joinColumns = @JoinColumn(name = "event_id"),
+		inverseJoinColumns = @JoinColumn(name = "student_id"))
+	private Set<Student> subs;
+	
+	public Event() {}
 
 	public int getId() {
 		return id;
@@ -80,14 +84,61 @@ public class Event {
 		this.place = place;
 	}
 
-	public EventDetails getEventDetails() {
-		return eventDetails;
+	public Details getDetails() {
+		return details;
 	}
 
-	public void setEventDetails(EventDetails eventDetails) {
-		this.eventDetails = eventDetails;
+	public void setDetails(Details details) {
+		this.details = details;
 	}
 
+	public University getUniversity() {
+		return university;
+	}
+
+	public void setUniversity(University university) {
+		this.university = university;
+	}
+
+	public Set<Student> getSubs() {
+		return subs;
+	}
+
+	public void setSubs(Set<Student> subs) {
+		this.subs = subs;
+	}
+
+	public void addSub(Student student) {
+		subs.add(student);
+		student.addSubscription(this);
+	}
+
+	public void removeSub(Student student) {
+		subs.remove(student);
+		student.removeSubscription(this);	
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Event other = (Event) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 	
 	
 }
