@@ -79,10 +79,15 @@
 							<a href="${deleteLink}"	onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
 						</security:authorize>
 						
-						<security:authorize access="hasRole('STUDENT')">
+						<security:authorize access="hasAnyRole('STUDENT', 'COMPANY')">
 							<security:authentication var="username" property="principal.username"/>
 							<c:set var="subbed" scope="page" value="false"/>
-							<c:forEach var="sub" items="${tempEvent.subs}">
+							<c:forEach var="sub" items="${tempEvent.students}">
+								<c:if test="${username eq sub.user.username}">
+									<c:set var="subbed" value="true"/>
+								</c:if>
+							</c:forEach>
+							<c:forEach var="sub" items="${tempEvent.companies}">
 								<c:if test="${username eq sub.user.username}">
 									<c:set var="subbed" value="true"/>
 								</c:if>

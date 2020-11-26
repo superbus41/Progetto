@@ -23,14 +23,4 @@ public class HomeController {
 		return "access-denied";
 	}	
 	
-	@GetMapping("/newOffer")
-	public String showNewOfferForm() {
-		return "new-offer-type-form";
-	}
-	
-	@GetMapping("/listOffer")
-	public String list(Model model) {
-		
-		return "offer-list";
-	}
 }

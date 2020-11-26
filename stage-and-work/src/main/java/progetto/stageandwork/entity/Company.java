@@ -1,12 +1,13 @@
 package progetto.stageandwork.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="company")
-public class Company {
+public class Company implements Subscriber {
 	
 	@Id
 	@Column(name="partita_iva")
@@ -24,6 +25,9 @@ public class Company {
 	
 	@OneToMany(mappedBy = "company")
 	private List<Work> works;
+	
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy="companies")
+	private Set<Event> subscribedEvents;
 	
 	public Company() {
 	}
@@ -55,6 +59,17 @@ public class Company {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	@Override
+	public void addSubscription(Event event) {
+		subscribedEvents.add(event);	
+	}
+
+	@Override
+	public void removeSubscription(Event event) {
+		subscribedEvents.remove(event);
+		
 	}
 		
 }

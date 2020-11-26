@@ -40,11 +40,11 @@
 						</tr>
 						<tr>
 							<td><label>Data di inizio:</label></td>
-							<td><form:input path="startingDate" type="date"/></td>
+							<td><form:input placeholder="AAAA-MM-DD" path="startingDate" type="date"/></td>
 						</tr>
 						<tr>
 							<td><label>Data di fine:</label></td>
-							<td><form:input path="endingDate" type="date"/></td>
+							<td><form:input placeholder="AAAA-MM-DD" path="endingDate" type="date"/></td>
 						</tr>
 						<tr>
 							<td><label>Descrizione dello stage:</label></td>

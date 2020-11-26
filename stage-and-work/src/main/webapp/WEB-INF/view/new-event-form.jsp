@@ -21,6 +21,7 @@
 			<h3>Save Event</h3>
 			<form:form action="save" modelAttribute="event" method="POST">
 				<form:hidden path="id"/>
+				<form:hidden path="details.id"/>
 				<table>
 					<tbody>
 						<tr>

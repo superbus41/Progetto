@@ -8,8 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
+
 
 @Configuration
 @EnableWebSecurity
@@ -29,9 +28,9 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests()
 			.antMatchers("/home", "/**/list", "/**/details", "/**/search").authenticated()
-			.antMatchers("/**/**subscribe").hasRole("STUDENT")
-			.antMatchers("/**/convalidate", "/**/invalidate", "/event/**").hasRole("UNIVERSITY")
-			.antMatchers("/work/**", "/stage/**", "/newOffer").hasRole("COMPANY")
+			.antMatchers("/**/**subscribe").hasAnyRole("STUDENT", "COMPANY")
+			.antMatchers("/**/**validate", "/event/**").hasRole("UNIVERSITY")
+			.antMatchers("/work/**", "/stage/**").hasRole("COMPANY")
 		.and()
 		.formLogin()
 			.loginPage("/showMyLoginPage")

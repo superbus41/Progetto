@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import progetto.stageandwork.entity.Event;
 import progetto.stageandwork.entity.Student;
+import progetto.stageandwork.entity.Subscriber;
 import progetto.stageandwork.entity.University;
 import progetto.stageandwork.entity.User;
 import progetto.stageandwork.service.EventService;
@@ -106,11 +107,11 @@ public class EventController {
 		
 		User user = userService.loadUserByUsername(principal.getName());
 		
-		Student student = user.getStudent();
+		Subscriber sub = user.getSubscriber();
 		
 		Event event = eventService.getEvent(id);
 		
-		event.addSub(student);
+		event.addSub(sub);
 		
 		eventService.saveEvent(event);
 		
@@ -122,11 +123,11 @@ public class EventController {
 		
 		User user = userService.loadUserByUsername(principal.getName());
 		
-		Student student = user.getStudent();
+		Subscriber sub = user.getSubscriber();
 		
 		Event event = eventService.getEvent(id);
 
-		event.removeSub(student);
+		event.removeSub(sub);
 			
 		eventService.saveEvent(event);
 		

@@ -24,7 +24,7 @@
 	
 		<div id="content">
 					
-			<form:form action="searchStage" method="GET">
+			<form:form action="search" method="GET">
                 Cerca Stage: <input type="text" name="searchName" />
                 
                 <input type="submit" value="Search" class="add-button" />

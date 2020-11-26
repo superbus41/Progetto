@@ -69,5 +69,11 @@ public class User {
 		this.university = university;
 	}
 	
-	
+	public Subscriber getSubscriber() {
+		
+		if (student != null )
+			return student;
+		else
+			return company;
+	}
 }

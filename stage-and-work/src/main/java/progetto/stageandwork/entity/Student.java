@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="student")
-public class Student {
+public class Student implements Subscriber {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Student {
 	@JoinColumn(name="user")
 	private User user;
 
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy="subs")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy="students")
 	private Set<Event> subscribedEvents;
 	
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy="subs")
@@ -117,6 +117,7 @@ public class Student {
 	public void removeSubscription(Stage stage) {
 		subscribedStages.remove(stage);
 	}
+	
 	public void addSubscription(Work work) {
 		subscribedWorks.add(work);
 	}

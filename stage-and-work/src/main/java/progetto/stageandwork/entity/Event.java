@@ -40,9 +40,18 @@ public class Event {
 	@JoinTable(name = "event_student",
 		joinColumns = @JoinColumn(name = "event_id"),
 		inverseJoinColumns = @JoinColumn(name = "student_id"))
-	private Set<Student> subs;
+	private Set<Student> students;
 	
-	public Event() {}
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, 
+			CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinTable(name = "event_company",
+		joinColumns = @JoinColumn(name = "event_id"),
+		inverseJoinColumns = @JoinColumn(name = "company_id"))
+	private Set<Company> companies;
+	
+	
+	public Event() {
+	}
 
 	public int getId() {
 		return id;
@@ -100,22 +109,40 @@ public class Event {
 		this.university = university;
 	}
 
-	public Set<Student> getSubs() {
-		return subs;
+	public Set<Student> getStudents() {
+		return students;
 	}
 
-	public void setSubs(Set<Student> subs) {
-		this.subs = subs;
+	public void setStudents(Set<Student> students) {
+		this.students = students;
 	}
 
-	public void addSub(Student student) {
-		subs.add(student);
-		student.addSubscription(this);
+	public Set<Company> getCompanies() {
+		return companies;
 	}
 
-	public void removeSub(Student student) {
-		subs.remove(student);
-		student.removeSubscription(this);	
+	public void setCompanies(Set<Company> companies) {
+		this.companies = companies;
+	}
+	
+	public void addSub(Subscriber sub) {
+		
+		if (sub instanceof Student) 
+			students.add((Student) sub);
+		else 
+			companies.add((Company) sub);
+		
+		sub.addSubscription(this);
+	}
+
+	public void removeSub(Subscriber sub) {
+		
+		if (sub instanceof Student) 
+			students.remove((Student) sub);
+		else 
+			companies.remove((Company) sub);
+		
+		sub.removeSubscription(this);	
 	}
 
 	@Override
