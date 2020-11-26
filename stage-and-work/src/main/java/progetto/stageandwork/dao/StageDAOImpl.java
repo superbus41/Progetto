@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import progetto.stageandwork.entity.Stage;
+import progetto.stageandwork.entity.Work;
 
 @Repository
 public class StageDAOImpl implements StageDAO {
@@ -61,24 +62,36 @@ public class StageDAOImpl implements StageDAO {
 	}
 
 	@Override
-	public List<Stage> searchStages(String searchName) {
+	public List<Stage> searchStages(String title, String sector, boolean curricular, boolean validated, String company) {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		Query query = null;
+		String hql = "select distinct s from Stage s join s.company c where";
 		
-		 if (searchName != null && searchName.trim().length() > 0) {
-			 
-			 query = session.createQuery("from Stage where lower(title) like :title", Stage.class); 
-			 query.setParameter("title", "%" + searchName.toLowerCase() + "%");
-			 
-		 }else {
-			 
-			 query = session.createQuery("from Stage", Stage.class);
-			 
-		 }
+		 if (title != null && title.trim().length() > 0)
+			 hql = hql.concat(" lower(title) like :title and ");
+		 if (sector != null && sector.trim().length() > 0)
+			 hql = hql.concat(" lower(sector) like :sector and ");
+		 if (company != null && company.trim().length() > 0) 
+			 hql = hql.concat(" lower(c.name) like :company and ");
+		 if(curricular)
+			 hql = hql.concat(" s.tipo is true and ");
+		 if(validated)
+			 hql = hql.concat(" s.validated is true and ");
 		 
-		 List <Stage> stages = query.getResultList();
+		 hql = hql.substring(0, hql.length() - 5).trim();
+		 
+		 Query query = session.createQuery(hql, Stage.class);
+		 
+		 if (title != null && title.trim().length() > 0)
+			 query.setParameter("title", title);
+		 if (sector != null && sector.trim().length() > 0)
+			 query.setParameter("sector", sector);
+		 if (company != null && company.trim().length() > 0)
+			 query.setParameter("company", company);
+		 
+		 List <Stage> stages = query.getResultList(); 		 
+		
 		 return stages;
 	}
 

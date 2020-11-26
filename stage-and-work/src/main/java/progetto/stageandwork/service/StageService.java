@@ -14,5 +14,5 @@ public interface StageService {
 
 	public void deleteStage(int id);
 
-	public List<Stage> searchStages(String searchName);
+	public List<Stage> searchStages(String title, String sector, boolean tipo, boolean validated, String company);
 }

@@ -24,29 +24,19 @@
 	
 		<div id="content">
 					
-			<form:form action="search" method="GET">
-                Cerca Stage: <input type="text" name="searchName" />
-                
-                <input type="submit" value="Search" class="add-button" />
-            </form:form>
+			<a href="${pageContext.request.contextPath}/stage/search">Ricerca stage</a>
 			
 			<!--  add our html table here -->
 		
 			<table>
 				<tr>
 					<th>Titolo</th>
-					<th></th>
 					<th>Settore</th>
-					<th></th>
 					<th>Tipo</th>
-					<th></th>
 					<th>Inizio</th>
-					<th></th>
 					<th>Fine</th>
-					<th></th>
 					<th>Valida</th>
-					<th></th>
-					<th>Azioni</th>
+					<th>Azienda</th>
 				</tr>
 				
 				<!-- loop over and print our customers -->
@@ -77,27 +67,24 @@
 					
 					<tr>
 						<td> <a href="${detailsLink}">${tempStage.title}</a></td>
-						<td></td>
 						<td> ${tempStage.sector} </td>
-						<td></td>
 						<td> ${tempStage.tipo} </td>
-						<td></td>
 						<td> ${tempStage.startingDate} </td>
-						<td></td>
 						<td> ${tempStage.endingDate} </td>
-						<td></td>
 						<td> ${tempStage.validated} </td>
-						<td></td>
-						
+						<td> ${tempStage.company.name} </td>
 						
 						<security:authorize access="hasRole('COMPANY')">
-							<td> <a href="${updateLink}">Update</a> |
-							<a href="${deleteLink}" onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
+							<security:authentication var="username" property="principal.username"/>
+							<c:if test="${username eq tempStage.company.user.username}">
+								<td> <a href="${updateLink}">Update</a> |
+								<a href="${deleteLink}" onclick="return confirm('Sei sicuro di voler eliminare questo stage?')">Elimina</a></td>
+							</c:if>
 						</security:authorize>
 						
 						<c:if test="${tempStage.validated}">
+							<security:authentication var="username" property="principal.username"/>
 							<security:authorize access="hasRole('STUDENT')">
-								<security:authentication var="username" property="principal.username"/>
 								<c:set var="subbed" scope="page" value="false"/>
 								<c:forEach var="sub" items="${tempStage.subs}">
 									<c:if test="${username eq sub.user.username}">

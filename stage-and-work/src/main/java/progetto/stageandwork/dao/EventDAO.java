@@ -15,5 +15,5 @@ public interface EventDAO {
 
 	public void deleteEvent(int id);
 
-	public List<Event> searchEvents(String searchName);
+	public List<Event> searchEvents(String title, String sector, String place, String university);
 }

@@ -66,25 +66,38 @@ public class EventDAOImpl implements EventDAO {
 		query.executeUpdate();*/
 	}
 
+
 	@Override
-	public List<Event> searchEvents(String searchName) {
+	public List<Event> searchEvents(String title, String sector, String place, String university) {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		Query query = null;
+		String hql = "select distinct e from Event e join e.university u where";
 		
-		 if (searchName != null && searchName.trim().length() > 0) {
-			 
-			 query = session.createQuery("from Event where lower(title) like :title", Event.class); 
-			 query.setParameter("title", "%" + searchName.toLowerCase() + "%");
-			 
-		 }else {
-			 
-			 query = session.createQuery("from Event", Event.class);
-			 
-		 }
+		 if (title != null && title.trim().length() > 0)
+			 hql = hql.concat(" lower(title) like :title and ");
+		 if (sector != null && sector.trim().length() > 0)
+			 hql = hql.concat(" lower(sector) like :sector and ");
+		 if (place != null && place.trim().length() > 0)
+			 hql = hql.concat(" lower(place) like :place and ");
+		 if (university != null && university.trim().length() > 0) 
+			 hql = hql.concat(" lower(u.name) like :university and ");
 		 
-		 List <Event> events = query.getResultList();
+		 hql = hql.substring(0, hql.length() - 5).trim();
+		 
+		 Query query = session.createQuery(hql, Event.class);
+		 
+		 if (title != null && title.trim().length() > 0)
+			 query.setParameter("title", title);
+		 if (sector != null && sector.trim().length() > 0)
+			 query.setParameter("sector", sector);
+		 if (place != null && place.trim().length() > 0)
+			 query.setParameter("place", place);
+		 if (university != null && university.trim().length() > 0)
+			 query.setParameter("university", university);
+		 
+		 List <Event> events = query.getResultList(); 		 
+		
 		 return events;
 	}
 

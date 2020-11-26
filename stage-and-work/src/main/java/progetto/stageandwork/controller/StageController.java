@@ -1,6 +1,7 @@
 package progetto.stageandwork.controller;
 
 import java.security.Principal;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import progetto.stageandwork.entity.Company;
+import progetto.stageandwork.entity.Event;
 import progetto.stageandwork.entity.Stage;
 import progetto.stageandwork.entity.Student;
 import progetto.stageandwork.entity.User;
@@ -82,9 +84,19 @@ public class StageController {
 	}
 	
 	@GetMapping("/search")
-	public String search(@RequestParam("searchName") String searchName, Model model) {
+	public String search() {
+		return "search-stage";
+	}	
+	
+	@GetMapping("/searchForm")
+	public String search(	@RequestParam String title,
+							@RequestParam String sector,
+							@RequestParam(required = false, defaultValue = "false") boolean curricular,
+							@RequestParam(required = false, defaultValue = "false") boolean validated,
+							@RequestParam String company,
+							Model model) {
 		
-		List<Stage> stages = stageService.searchStages(searchName);
+		List<Stage> stages = stageService.searchStages(title, sector, curricular, validated, company);
 		
 		model.addAttribute("stages", stages);
 		

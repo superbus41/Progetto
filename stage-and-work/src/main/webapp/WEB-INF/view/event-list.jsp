@@ -10,6 +10,7 @@
 	<title>Lista Eventi</title>
 	
 	<!-- reference our style sheet -->
+	
 </head>
 
 <body>
@@ -24,25 +25,15 @@
 	
 		<div id="content">
 					
-			<form:form action="search" method="GET">
-                Cerca Evento: <input type="text" name="searchName" />
-                
-                <input type="submit" value="Search" class="add-button" />
-            </form:form>
+			<a href="${pageContext.request.contextPath}/event/search">Ricerca eventi</a>
 			
-			<!--  add our html table here -->
-		
 			<table>
 				<tr>
 					<th>Titolo</th>
-					<th></th>
 					<th>Settore</th>
-					<th></th>
 					<th>Data</th>
-					<th></th>
 					<th>Luogo</th>
-					<th></th>
-					<th>Azioni</th>
+					<th>Università</th>
 				</tr>
 				
 				<!-- loop over and print our customers -->
@@ -66,17 +57,17 @@
 					
 					<tr>
 						<td> <a href="${detailsLink}">${tempEvent.title}</a></td>
-						<td></td>
 						<td> ${tempEvent.sector} </td>
-						<td></td>
 						<td> ${tempEvent.date} </td>
-						<td></td>
 						<td> ${tempEvent.place} </td>
-						<td></td>
+						<td> ${tempEvent.university.name} </td>
 						
 						<security:authorize access="hasRole('UNIVERSITY')">
-							<td> <a href="${updateLink}">Update</a>
-							<a href="${deleteLink}"	onclick="if (!(confirm('Sei sicuro di voler eliminare l'evento?\n(Permanente)'))) return false">Elimina</a></td>
+							<security:authentication var="username" property="principal.username"/>
+							<c:if test="${username eq tempEvent.university.user.username}">
+								<td> <a href="${updateLink}">Update</a>
+								<a href="${deleteLink}"	onclick="return confirm('Sei sicuro di voler eliminare questo evento?')">Elimina</a></td>
+							</c:if>
 						</security:authorize>
 						
 						<security:authorize access="hasAnyRole('STUDENT', 'COMPANY')">

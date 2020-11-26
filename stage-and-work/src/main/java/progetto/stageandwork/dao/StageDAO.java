@@ -3,6 +3,7 @@ package progetto.stageandwork.dao;
 import java.util.List;
 
 import progetto.stageandwork.entity.Stage;
+import progetto.stageandwork.entity.Work;
 
 
 public interface StageDAO {
@@ -15,5 +16,5 @@ public interface StageDAO {
 
 	public void deleteStage(int id);
 
-	public List<Stage> searchStages(String searchName);
+	public List<Stage> searchStages(String title, String sector, boolean curricular, boolean valid, String company);
 }

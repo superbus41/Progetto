@@ -1,6 +1,7 @@
 package progetto.stageandwork.controller;
 
 import java.security.Principal;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,9 +81,17 @@ public class WorkController {
 	}
 
 	@GetMapping("/search")
-	public String search(@RequestParam("searchName") String searchName, Model model) {
+	public String search() {
+		return "search-work";
+	}	
+	
+	@GetMapping("/searchForm")
+	public String search(	@RequestParam String title,
+							@RequestParam String sector,
+							@RequestParam String company,
+							Model model) {
 		
-		List<Work> works = workService.searchWorks(searchName);
+		List<Work> works = workService.searchWorks(title, sector, company);
 		
 		model.addAttribute("works", works);
 		

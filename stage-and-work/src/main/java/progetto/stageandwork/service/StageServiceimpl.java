@@ -44,9 +44,8 @@ public class StageServiceimpl implements StageService {
 
 	@Override
 	@Transactional
-	public List<Stage> searchStages(String searchName) {
-		
-		return stageDAO.searchStages(searchName);
+	public List<Stage> searchStages(String title, String sector, boolean tipo, boolean validated, String company) {
+		return stageDAO.searchStages(title, sector, tipo, validated, company);
 	}
 
 }

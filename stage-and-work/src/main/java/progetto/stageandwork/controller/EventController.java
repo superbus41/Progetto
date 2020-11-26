@@ -1,6 +1,7 @@
 package progetto.stageandwork.controller;
 
 import java.security.Principal;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,9 +84,18 @@ public class EventController {
 	}
 	
 	@GetMapping("/search")
-	public String search(@RequestParam("searchName") String searchName, Model model) {
+	public String search() {
+		return "search-event";
+	}	
+	
+	@GetMapping("/searchForm")
+	public String search(	@RequestParam String title,
+							@RequestParam String sector,
+							@RequestParam String place,
+							@RequestParam String university,
+							Model model) {
 		
-		List<Event> events = eventService.searchEvents(searchName);
+		List<Event> events = eventService.searchEvents(title, sector, place, university);
 		
 		model.addAttribute("events", events);
 		

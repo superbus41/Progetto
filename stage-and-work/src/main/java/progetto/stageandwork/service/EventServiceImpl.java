@@ -18,14 +18,12 @@ public class EventServiceImpl implements EventService {
 	@Override
 	@Transactional
 	public List<Event> getEvents() {
-		
 		return eventDAO.getEvents();
 	}
 
 	@Override
 	@Transactional
 	public void saveEvent(Event event) {
-		
 		eventDAO.saveEvent(event);
 	}
 
@@ -44,9 +42,8 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	@Transactional
-	public List<Event> searchEvents(String searchName) {
-		
-		return eventDAO.searchEvents(searchName);
+	public List<Event> searchEvents(String title, String sector, String place, String university) {
+		return eventDAO.searchEvents(title, sector, place, university);
 	}
 
 }

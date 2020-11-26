@@ -8,6 +8,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import progetto.stageandwork.entity.Event;
 import progetto.stageandwork.entity.Work;
 
 @Repository
@@ -60,27 +61,36 @@ public class WorkDAOImpl implements WorkDAO {
 		query.executeUpdate();
 	}
 
+
+	
 	@Override
-	public List<Work> searchWorks(String searchName) {
+	public List<Work> searchWorks(String title, String sector, String company) {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		Query query = null;
+		String hql = "select distinct w from Work w join w.company c where";
 		
-		 if (searchName != null && searchName.trim().length() > 0) {
-			 
-			 query = session.createQuery("from Work where lower(title) like :title", Work.class); 
-			 query.setParameter("title", "%" + searchName.toLowerCase() + "%");
-			 
-		 }else {
-			 
-			 query = session.createQuery("from Work", Work.class);
-			 
-		 }
+		 if (title != null && title.trim().length() > 0)
+			 hql = hql.concat(" lower(title) like :title and ");
+		 if (sector != null && sector.trim().length() > 0)
+			 hql = hql.concat(" lower(sector) like :sector and ");
+		 if (company != null && company.trim().length() > 0) 
+			 hql = hql.concat(" lower(c.name) like :company and ");
 		 
-		 List <Work> works = query.getResultList();
+		 hql = hql.substring(0, hql.length() - 5).trim();
+		 
+		 Query query = session.createQuery(hql, Work.class);
+		 
+		 if (title != null && title.trim().length() > 0)
+			 query.setParameter("title", title);
+		 if (sector != null && sector.trim().length() > 0)
+			 query.setParameter("sector", sector);
+		 if (company != null && company.trim().length() > 0)
+			 query.setParameter("company", company);
+		 
+		 List <Work> works = query.getResultList(); 		 
+		
 		 return works;
 	}
-
 
 }

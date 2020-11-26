@@ -14,5 +14,5 @@ public interface WorkService {
 
 	public void deleteWork(int id);
 
-	public List<Work> searchWorks(String searchName);
+	public List<Work> searchWorks(String title, String sector, String company);
 }

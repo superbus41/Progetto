@@ -27,7 +27,7 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-			.antMatchers("/home", "/**/list", "/**/details", "/**/search").authenticated()
+			.antMatchers("/home", "/**/list", "/**/details", "/**/search**").authenticated()
 			.antMatchers("/**/**subscribe").hasAnyRole("STUDENT", "COMPANY")
 			.antMatchers("/**/**validate", "/event/**").hasRole("UNIVERSITY")
 			.antMatchers("/work/**", "/stage/**").hasRole("COMPANY")

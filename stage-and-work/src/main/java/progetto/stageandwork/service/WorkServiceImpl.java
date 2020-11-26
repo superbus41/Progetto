@@ -45,9 +45,9 @@ public class WorkServiceImpl implements WorkService {
 
 	@Override
 	@Transactional
-	public List<Work> searchWorks(String searchName) {
-		
-		return workDAO.searchWorks(searchName);
+	public List<Work> searchWorks(String title, String sector, String company) {
+		// TODO Auto-generated method stub
+		return workDAO.searchWorks(title, sector, company);
 	}
 
 }
