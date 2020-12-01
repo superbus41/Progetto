@@ -1,5 +1,6 @@
 package progetto.stageandwork.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,9 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	@Transactional
-	public List<Event> searchEvents(String title, String sector, String place, String university) {
-		return eventDAO.searchEvents(title, sector, place, university);
+	public List<Event> searchEvents(String title, String sector, String place, String university, Date fromDate,
+			Date toDate) {
+		 return eventDAO.searchEvents(title, sector, place, university, fromDate, toDate);
 	}
 
 }

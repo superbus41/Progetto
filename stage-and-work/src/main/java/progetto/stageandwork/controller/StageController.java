@@ -94,9 +94,11 @@ public class StageController {
 							@RequestParam(required = false, defaultValue = "false") boolean curricular,
 							@RequestParam(required = false, defaultValue = "false") boolean validated,
 							@RequestParam String company,
+							@RequestParam(required = false, defaultValue = "2000-01-01") String fromDate,
+							@RequestParam(required = false, defaultValue = "2099-12-31") String toDate,
 							Model model) {
 		
-		List<Stage> stages = stageService.searchStages(title, sector, curricular, validated, company);
+		List<Stage> stages = stageService.searchStages(title, sector, curricular, validated, company, Date.valueOf(fromDate), Date.valueOf(toDate));
 		
 		model.addAttribute("stages", stages);
 		

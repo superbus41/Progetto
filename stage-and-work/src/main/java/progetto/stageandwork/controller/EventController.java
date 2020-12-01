@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import progetto.stageandwork.entity.Event;
-import progetto.stageandwork.entity.Student;
 import progetto.stageandwork.entity.Subscriber;
 import progetto.stageandwork.entity.University;
 import progetto.stageandwork.entity.User;
@@ -93,9 +92,11 @@ public class EventController {
 							@RequestParam String sector,
 							@RequestParam String place,
 							@RequestParam String university,
+							@RequestParam(required = false, defaultValue = "2000-01-01") String fromDate,
+							@RequestParam(required = false, defaultValue = "2099-12-31") String toDate,
 							Model model) {
 		
-		List<Event> events = eventService.searchEvents(title, sector, place, university);
+		List<Event> events = eventService.searchEvents(title, sector, place, university, Date.valueOf(fromDate), Date.valueOf(toDate));
 		
 		model.addAttribute("events", events);
 		

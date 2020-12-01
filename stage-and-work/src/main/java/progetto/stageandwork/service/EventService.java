@@ -1,5 +1,6 @@
 package progetto.stageandwork.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import progetto.stageandwork.entity.Event;
@@ -14,5 +15,5 @@ public interface EventService {
 
 	public void deleteEvent(int id);
 
-	public List<Event> searchEvents(String title, String sector, String place, String university);
+	public List<Event> searchEvents(String title, String sector, String place, String university, Date fromDate, Date toDate);
 }

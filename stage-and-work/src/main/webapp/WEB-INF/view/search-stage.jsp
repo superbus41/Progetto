@@ -9,15 +9,32 @@
 </head>
 
 <body>
-	<form:form action="searchForm" method="GET">
-		<p>Titolo: <input type="text" name="title" /></p>
-		<p>Settore: <input type="text" name="sector" /></p>
-		<p>Curriculare: <input type="checkbox" name="curricular" /></p>
-		<p>Convalidato: <input type="checkbox" name="validated" /></p>
-		<p>Azienda: <input type="text" name="company" /></p>	
-		<p>Da: <input type="date" name="fromDate"/></p>
-		<p>A: <input type="date" name="toDate"/></p>
-		<input type="submit" value="Search" />
-	</form:form>
+	<table>
+		<form:form action="searchForm" method="GET">
+		
+			<tr><td>Titolo:</td>
+			<td><input type="text" name="title" /></td></tr>
+			
+			<tr><td>Settore:</td>
+			<td><input type="text" name="sector" /></td></tr>
+			
+			<tr><td>Curriculare:</td>
+			<td><input type="checkbox" name="curricular" /></td></tr>
+			
+			<tr><td>Convalidato:</td>
+			<td><input type="checkbox" name="validated" /></td></tr>
+			
+			
+			<tr><td>Azienda:</td>
+			<td><input type="text" name="company" /></td></tr>
+			
+			<tr><td>Da:</td>
+			<td><input type="date" name="fromDate"/></td>
+			<td>A:</td>
+			<td><input type="date" name="toDate"/></td></tr>
+			
+			<tr><td><input type="submit" value="Search" /></td></tr>
+		</form:form>
+	</table>
 </body>
 </html>

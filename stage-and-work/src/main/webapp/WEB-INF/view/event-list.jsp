@@ -10,7 +10,19 @@
 	<title>Lista Eventi</title>
 	
 	<!-- reference our style sheet -->
-	
+	<style>
+		td.long {
+			width: 300px;
+			border: 1px solid grey;
+			padding: 5px;
+		}
+		td.short {
+			text-align: center;
+			border: 1px solid grey;
+			width: 120px;
+			padding: 5px;
+		}
+	</style>
 </head>
 
 <body>
@@ -56,17 +68,18 @@
 					</c:url>
 					
 					<tr>
-						<td> <a href="${detailsLink}">${tempEvent.title}</a></td>
-						<td> ${tempEvent.sector} </td>
-						<td> ${tempEvent.date} </td>
-						<td> ${tempEvent.place} </td>
-						<td> ${tempEvent.university.name} </td>
+						<td class="long"> <a href="${detailsLink}">${tempEvent.title}</a></td>
+						<td class="long"> ${tempEvent.sector} </td>
+						<td class="short"> ${tempEvent.date} </td>
+						<td class="long"> ${tempEvent.place} </td>
+						<td class="short"> ${tempEvent.university.name} </td>
 						
 						<security:authorize access="hasRole('UNIVERSITY')">
 							<security:authentication var="username" property="principal.username"/>
 							<c:if test="${username eq tempEvent.university.user.username}">
-								<td> <a href="${updateLink}">Update</a>
-								<a href="${deleteLink}"	onclick="return confirm('Sei sicuro di voler eliminare questo evento?')">Elimina</a></td>
+								<td class="short"><a href="${updateLink}">Update</a></td>
+								<td class="short"><a href="${deleteLink}"	
+									onclick="return confirm('Sei sicuro di voler eliminare questo evento?')">Elimina</a></td>
 							</c:if>
 						</security:authorize>
 						
@@ -83,10 +96,14 @@
 									<c:set var="subbed" value="true"/>
 								</c:if>
 							</c:forEach>
-							<c:choose>
-								<c:when test="${!subbed}"><td><a href="${subscribeLink}">Iscrivi</a></td></c:when>
-								<c:otherwise><td><a href="${unsubscribeLink}">Disiscrivi</a></td></c:otherwise>
-							</c:choose>
+							<td class="short">
+								<c:choose>
+									<c:when test="${!subbed}"><a href="${subscribeLink}" 
+										onclick="alert('Iscrizione completatata con successo');">Iscrivi</a></c:when>
+									<c:otherwise><a href="${unsubscribeLink}" 
+										onclick="return confirm('Sei sicuro di volerti disicrivere da questo evento?')">Disiscrivi</a></c:otherwise>
+								</c:choose>
+							</td>
 						</security:authorize>
 					</tr>
 				
@@ -95,12 +112,10 @@
 			</table>
 				
 		</div>
-		<div style="clear; both;"></div>
 		<p>
 			<a href="${pageContext.request.contextPath}/home">Homepage</a>
 		</p>
 	</div>
-	
 
 </body>
 

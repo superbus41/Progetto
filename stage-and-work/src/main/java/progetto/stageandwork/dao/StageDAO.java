@@ -1,5 +1,6 @@
 package progetto.stageandwork.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import progetto.stageandwork.entity.Stage;
@@ -16,5 +17,5 @@ public interface StageDAO {
 
 	public void deleteStage(int id);
 
-	public List<Stage> searchStages(String title, String sector, boolean curricular, boolean valid, String company);
+	public List<Stage> searchStages(String title, String sector, boolean curricular, boolean valid, String company, Date fromDate, Date toDate);
 }

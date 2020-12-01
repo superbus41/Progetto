@@ -9,13 +9,28 @@
 </head>
 
 <body>
-	<form:form action="searchForm" method="GET">
-		<p>Titolo: <input type="text" name="title" /></p>
-		<p>Settore: <input type="text" name="sector" /></p>
-		<p>Luogo: <input type="text" name="place" /></p>
-		<p>Università: <input type="text" name="university" /></p>	
-		<p>Data: <input type="date" name="date"/></p>
-		<input type="submit" value="Search" />
-	</form:form>
+	<table>
+		<form:form action="searchForm" method="GET">
+		
+			<tr><td>Titolo:</td>
+			<td><input type="text" name="title" /></td></tr>
+			
+			<tr><td>Settore:</td>
+			<td><input type="text" name="sector" /></td></tr>
+			
+			<tr><td>Luogo:</td>
+			<td><input type="text" name="place" /></td></tr>
+			
+			<tr><td>Università:</td>
+			<td><input type="text" name="university" /></td></tr>
+			
+			<tr><td>Da:</td>
+			<td><input type="date" name="fromDate"/></td>
+			<td>A:</td>
+			<td><input type="date" name="toDate"/></td></tr>
+			
+			<tr><td><input type="submit" value="Search" /></td></tr>
+		</form:form>
+	</table>
 </body>
 </html>

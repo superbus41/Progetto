@@ -1,5 +1,6 @@
 package progetto.stageandwork.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ public class StageServiceimpl implements StageService {
 
 	@Override
 	@Transactional
-	public List<Stage> searchStages(String title, String sector, boolean tipo, boolean validated, String company) {
-		return stageDAO.searchStages(title, sector, tipo, validated, company);
+	public List<Stage> searchStages(String title, String sector, boolean tipo, boolean validated, String company, Date fromDate, Date toDate) {
+		return stageDAO.searchStages(title, sector, tipo, validated, company, fromDate, toDate);
 	}
 
 }

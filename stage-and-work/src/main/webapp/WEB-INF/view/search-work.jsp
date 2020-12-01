@@ -9,11 +9,20 @@
 </head>
 
 <body>
-	<form:form action="searchForm" method="GET">
-		<p>Titolo: <input type="text" name="title" /></p>
-		<p>Settore: <input type="text" name="sector" /></p>
-		<p>Azienda: <input type="text" name="company" /></p>	
-		<input type="submit" value="Search" />
-	</form:form>
+	<table>
+		<form:form action="searchForm" method="GET">
+		
+			<tr><td>Titolo:</td>
+			<td><input type="text" name="title" /></td></tr>
+			
+			<tr><td>Settore:</td>
+			<td><input type="text" name="sector" /></td></tr>
+			
+			<tr><td>Azienda:</td>
+			<td><input type="text" name="company" /></td></tr>
+			
+			<tr><td><input type="submit" value="Search" /></td></tr>
+		</form:form>
+	</table>
 </body>
 </html>

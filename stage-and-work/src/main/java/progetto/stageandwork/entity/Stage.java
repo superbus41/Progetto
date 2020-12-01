@@ -27,6 +27,9 @@ public class Stage {
 	@Column(name = "tipo")
 	private boolean tipo;
 	
+	@Column(name = "tutor")
+	private String tutor;
+	
 	@Column(name = "starting_date")
 	private Date startingDate;
 	
@@ -89,6 +92,14 @@ public class Stage {
 
 	public void setTipo(boolean tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getTutor() {
+		return tutor;
+	}
+
+	public void setTutor(String tutor) {
+		this.tutor = tutor;
 	}
 
 	public Date getStartingDate() {

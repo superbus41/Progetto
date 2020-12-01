@@ -1,9 +1,11 @@
 package progetto.stageandwork.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.internal.build.AllowSysOut;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -68,22 +70,23 @@ public class EventDAOImpl implements EventDAO {
 
 
 	@Override
-	public List<Event> searchEvents(String title, String sector, String place, String university) {
+	public List<Event> searchEvents(String title, String sector, String place, String university, Date fromDate, Date toDate) {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		String hql = "select distinct e from Event e join e.university u where";
+		String hql = "select distinct e from Event e join e.university u where 1 = 1";
 		
 		 if (title != null && title.trim().length() > 0)
-			 hql = hql.concat(" lower(title) like :title and ");
+			 hql = hql.concat(" and lower(title) like :title");
 		 if (sector != null && sector.trim().length() > 0)
-			 hql = hql.concat(" lower(sector) like :sector and ");
+			 hql = hql.concat(" and lower(sector) like :sector");
 		 if (place != null && place.trim().length() > 0)
-			 hql = hql.concat(" lower(place) like :place and ");
+			 hql = hql.concat(" and lower(place) like :place");
 		 if (university != null && university.trim().length() > 0) 
-			 hql = hql.concat(" lower(u.name) like :university and ");
+			 hql = hql.concat(" and lower(u.name) like :university");
+		 hql = hql.concat(" and lower(date) between :fromDate and :toDate");
 		 
-		 hql = hql.substring(0, hql.length() - 5).trim();
+		 System.out.println(">>>>>>>>>>>>>>>" + hql);
 		 
 		 Query query = session.createQuery(hql, Event.class);
 		 
@@ -95,6 +98,8 @@ public class EventDAOImpl implements EventDAO {
 			 query.setParameter("place", place);
 		 if (university != null && university.trim().length() > 0)
 			 query.setParameter("university", university);
+		 query.setParameter("fromDate", fromDate);
+		 query.setParameter("toDate", toDate);
 		 
 		 List <Event> events = query.getResultList(); 		 
 		

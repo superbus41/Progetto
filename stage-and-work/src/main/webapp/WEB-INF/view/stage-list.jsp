@@ -9,7 +9,21 @@
 <head>
 	<title>Lista Stage</title>
 	
-	<!-- reference our style sheet -->
+	<style>
+	
+	td.long {
+		width: 300px;
+		border: 1px solid grey;
+		padding: 5px;
+		}
+	td.short {
+		text-align: center;
+		border: 1px solid grey;
+		width: 120px;
+		padding: 5px;
+		}
+	
+	</style>
 </head>
 
 <body>
@@ -26,7 +40,6 @@
 					
 			<a href="${pageContext.request.contextPath}/stage/search">Ricerca stage</a>
 			
-			<!--  add our html table here -->
 		
 			<table>
 				<tr>
@@ -34,12 +47,11 @@
 					<th>Settore</th>
 					<th>Tipo</th>
 					<th>Inizio</th>
-					<th>Fine</th>
-					<th>Valida</th>
+					<th>Durata</th>
+					<th>Convalidata</th>
 					<th>Azienda</th>
 				</tr>
 				
-				<!-- loop over and print our customers -->
 				<c:forEach var="tempStage" items="${stages}">
 				
 					<c:url var="detailsLink" value="/stage/details">
@@ -66,47 +78,88 @@
 					
 					
 					<tr>
-						<td> <a href="${detailsLink}">${tempStage.title}</a></td>
-						<td> ${tempStage.sector} </td>
-						<td> ${tempStage.tipo} </td>
-						<td> ${tempStage.startingDate} </td>
-						<td> ${tempStage.endingDate} </td>
-						<td> ${tempStage.validated} </td>
-						<td> ${tempStage.company.name} </td>
+						<td class="long"> <a href="${detailsLink}">${tempStage.title}</a></td>
+						<td class="long"> ${tempStage.sector} </td>
+						<td class="short"> 
+							<c:choose>
+								<c:when test="${tempStage.tipo}">
+									Curriculare
+								</c:when>
+								<c:otherwise>
+									Extracurriculare
+								</c:otherwise>
+							</c:choose>
+						</td>
+						<td class="short"> ${tempStage.startingDate} </td>
+						<td class="short"> ${tempStage.endingDate} </td>
+						<td class="short"> 
+							<c:choose>
+								<c:when test="${tempStage.validated}">
+									Si
+								</c:when>
+								<c:otherwise>
+									No
+								</c:otherwise>
+							</c:choose>
+						</td>
+						<td class="short"> ${tempStage.company.name} </td>
 						
 						<security:authorize access="hasRole('COMPANY')">
 							<security:authentication var="username" property="principal.username"/>
 							<c:if test="${username eq tempStage.company.user.username}">
-								<td> <a href="${updateLink}">Update</a> |
-								<a href="${deleteLink}" onclick="return confirm('Sei sicuro di voler eliminare questo stage?')">Elimina</a></td>
+								<td class="short"><a href="${updateLink}">Update</a></td>|
+								<td class="short"><a href="${deleteLink}" 
+									onclick="return confirm('Sei sicuro di voler eliminare questa offerta?')">Elimina</a></td>
 							</c:if>
 						</security:authorize>
 						
 						<c:if test="${tempStage.validated}">
-							<security:authentication var="username" property="principal.username"/>
 							<security:authorize access="hasRole('STUDENT')">
-								<c:set var="subbed" scope="page" value="false"/>
-								<c:forEach var="sub" items="${tempStage.subs}">
-									<c:if test="${username eq sub.user.username}">
-										<c:set var="subbed" value="true"/>
-									</c:if>
-								</c:forEach>
-								<c:choose>
-									<c:when test="${!subbed}"><td><a href="${subscribeLink}">Iscrivi</a></td></c:when>
-									<c:otherwise><td><a href="${unsubscribeLink}">Disiscrivi</a></td></c:otherwise>
-								</c:choose>
+								<td class="short">
+									<security:authentication var="username" property="principal.username"/>
+									<c:set var="subbed" scope="page" value="false"/>
+									<c:forEach var="sub" items="${tempStage.subs}">
+										<c:if test="${username eq sub.user.username}">
+											<c:set var="subbed" value="true"/>
+										</c:if>
+									</c:forEach>
+									<c:choose>
+										<c:when test="${!subbed}"><a href="${subscribeLink}"
+											onclick="alert('Candidatura completatata con successo');">Iscrivi</a></c:when>
+										<c:otherwise><a href="${unsubscribeLink}"
+											onclick="return confirm('Sei sicuro di voler togliere la candidatura a questa offerta?')">Disiscrivi</a></c:otherwise>
+									</c:choose>
+								</td>
 							</security:authorize>
 						</c:if>
 
 						<security:authorize access="hasRole('UNIVERSITY')">
-							<td>
+							<td class="short">
 								<c:choose>
-									<c:when test="${!tempStage.validated}"><a href="${convalidateLink}">Convalida</a></c:when>
-									<c:otherwise><a href="${invalidateLink}">Invalida</a></c:otherwise>
+									<c:when test="${!tempStage.validated}"><a href="${convalidateLink}"
+										onclick="alert('Offerta convalidata con successo');">Convalida</a></c:when>
+									<c:otherwise><a href="${invalidateLink}"
+										onclick="return confirm('Sei sicuro di voler Invalidare questa offerta?')">Invalida</a></c:otherwise>
 								</c:choose>
 							</td>
 						</security:authorize>
 						
+						<c:if test="${tempStage.tutor == null}">
+							<td class="short">
+								<c:choose>
+									<c:when test="${tempStage.tipo}">
+										<security:authorize access="hasRole('UNIVERSITY')">
+											<a href="${tutorLink}">Assegna Tutor</a>
+										</security:authorize>
+									</c:when>
+									<c:otherwise>
+										<security:authorize access="hasRole('COMPANY')">
+											<a href="${tutorLink}">Assegna Tutor</a>
+										</security:authorize>
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</c:if>
 					</tr>
 				
 				</c:forEach>

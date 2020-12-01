@@ -1,5 +1,6 @@
 package progetto.stageandwork.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -62,24 +63,26 @@ public class StageDAOImpl implements StageDAO {
 	}
 
 	@Override
-	public List<Stage> searchStages(String title, String sector, boolean curricular, boolean validated, String company) {
+	public List<Stage> searchStages(String title, String sector, boolean curricular, boolean validated, String company, Date fromDate, Date toDate) {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-		String hql = "select distinct s from Stage s join s.company c where";
+		String hql = "select distinct s from Stage s join s.company c where 1 = 1";
 		
 		 if (title != null && title.trim().length() > 0)
-			 hql = hql.concat(" lower(title) like :title and ");
+			 hql = hql.concat(" and lower(title) like :title");
 		 if (sector != null && sector.trim().length() > 0)
-			 hql = hql.concat(" lower(sector) like :sector and ");
+			 hql = hql.concat(" and lower(sector) like :sector");
 		 if (company != null && company.trim().length() > 0) 
-			 hql = hql.concat(" lower(c.name) like :company and ");
+			 hql = hql.concat(" and lower(c.name) like :company");
 		 if(curricular)
-			 hql = hql.concat(" s.tipo is true and ");
+			 hql = hql.concat(" and s.tipo is true");
 		 if(validated)
-			 hql = hql.concat(" s.validated is true and ");
+			 hql = hql.concat(" and s.validated is true");
+		 hql = hql.concat(" and lower(starting_date) between :fromDate and :toDate");
+		 hql = hql.concat(" and lower(ending_date) between :fromDate and :toDate");
 		 
-		 hql = hql.substring(0, hql.length() - 5).trim();
+		 System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>" + hql);
 		 
 		 Query query = session.createQuery(hql, Stage.class);
 		 
@@ -89,6 +92,8 @@ public class StageDAOImpl implements StageDAO {
 			 query.setParameter("sector", sector);
 		 if (company != null && company.trim().length() > 0)
 			 query.setParameter("company", company);
+		 query.setParameter("fromDate", fromDate);
+		 query.setParameter("toDate", toDate);
 		 
 		 List <Stage> stages = query.getResultList(); 		 
 		
